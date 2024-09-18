@@ -1,0 +1,54 @@
+/* css for accessPage*/
+
+body{
+    height: 100%;
+    margin: 0;
+}
+
+.full-height{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-img-logo{
+    position: absolute;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+}
+
+.ls-title{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+
+.lspage-card{
+    box-shadow: 7px 7px 50px 5px lightgray;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.card{
+    text-align: center;
+}
+
+.ls-input{
+background-color: rgba(211, 211, 211, 0.219);
+padding: 5px;
+border: none;
+margin-bottom: 5px;
+}
+
+.ls-btn{
+    background-color: white;
+    padding: 5px 40px;
+}
+
+.ls-btn:hover{
+    background-color: black;
+    color: white;
+    box-shadow: 7px 7px 5px lightgray;
+}

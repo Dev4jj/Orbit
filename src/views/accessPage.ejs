@@ -8,12 +8,12 @@
 <div class="col-7 log-card">
           <div class="card p-3 shadow-sm ">
             <h2 class="card-title mb-4">Login</h2>
-            <form action="Home.html" method="get">
+            <form action="/login" method="get" id="loginForm">
               <div class="mb-2">
-                <input type="text" placeholder="Username" class="ls-input" />
+                <input type="text" placeholder="Username" name="username" class="ls-input" required/>
               </div>
               <div class="mb-3">
-                <input type="password" placeholder="Password" class="ls-input"/>
+                <input type="password" placeholder="Password" name="password" class="ls-input" required/>
               </div>
               <div><button type="submit" class="ls-btn">Login</button></div>
             </form>
@@ -26,15 +26,15 @@
       <div class="col-7 sign-card d-none">
         <div class="card p-3 shadow-sm">
           <h2 class="card-title mb-4">Signup</h2>
-          <form action="Login.html" method="get">
+          <form action="/signup" method="POST" id="signForm">
               <div class="mb-2">
-                  <input type="text" placeholder="First Name" class="ls-input"/>
+                  <input type="text" placeholder="First Name" name="fname" id="signfname" class="ls-input" required/>
                 </div>
             <div class="mb-2">
-              <input type="text" placeholder="Username" class="ls-input"/>
+              <input type="text" placeholder="Username" name="username" class="ls-input" id="signusername" required/>
             </div>
             <div class="mb-3">
-              <input type="password" placeholder="Password" class="ls-input"/>
+              <input type="password" placeholder="Password" name="password" class="ls-input" id="signpassword" required/>
             </div>
             <div><button type="submit" class="ls-btn">Signup</button></div>
           </form>

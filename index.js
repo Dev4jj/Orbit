@@ -30,7 +30,9 @@ app.post('/signup', (req, res)=>{
     console.log(req.body);
 });
 
-app.get('login', (req, res)=>{
+app.get('/login', (req, res)=>{
+    const access = false; // check databse if user info matches then set access to true or false
+    res.render("index", {access});
     console.log('User is logged in');
     console.log(req.body);
 });

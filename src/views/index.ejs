@@ -5,13 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Orbit</title>
     <link rel="icon" type="image/png" href="/images/satellite.png"/>
+    <% if(access){%>
     <link rel="stylesheet" href="/css/index.css"/>
+    <%}else{%>
+      <link rel="stylesheet" href="/css/myAccount.css"/>
+      <%}%>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
   </head>
   <body class="bg-light">
 
+  <%if (access){%>
 <%- include("accessPage.ejs")%>
-
+<%} else{%>
+<%- include("myAccount.ejs")%>
+<%}%>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/main.js"></script>
 

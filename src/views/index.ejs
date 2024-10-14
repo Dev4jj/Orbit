@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Orbit</title>
     <link rel="icon" type="image/png" href="/images/satellite.png"/>
-    <% if(access){%>
+    <% if(access == false){%>
     <link rel="stylesheet" href="/css/index.css"/>
     <%}else{%>
       <link rel="stylesheet" href="/css/myAccount.css"/>
@@ -14,7 +14,7 @@
   </head>
   <body class="bg-light">
 
-  <%if (access){%>
+  <%if (access == false){%>
 <%- include("accessPage.ejs")%>
 <%} else{%>
 <%- include("myAccount.ejs")%>

@@ -35,7 +35,32 @@ body{
     border-radius: 10px;
 }
 
+/* update account styling */
 
+.pf-update{
+    background-color:  rgba(211, 211, 211, 0.219);
+    padding: 5px;
+    border: none;
+    }
+    
+    .update-btn{
+        background-color: white;
+        padding: 5px 40px;
+        display: block;
+        margin: auto;
+    }
+    
+    .update-btn:hover{
+        background-color: black;
+        color: white;
+        box-shadow: 7px 7px 5px lightgray;
+    }
+    
+    .dlt-modal-btn{
+        text-align: center;
+    }
+
+/* the feed */
 .the-feeds-container{
     overflow-y: scroll;
     height: 80vh;
@@ -70,11 +95,86 @@ body{
 }
 
 .msg{
-    min-width: 200px;
-    width: 100% ;
+    width: 100%;
     border-radius: 20px;
     border: 1px solid #ccc;
     background-color: rgba(211, 211, 211, 0.123);
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 5px 20px;
+
+}
+
+.post-btn{
+    width: 100%;
+    background-color: white;
+    padding: 5px 20px;
+    border-radius: 5px;
+
+}
+
+.post-btn:hover{
+    background-color: black;
+    color: white;
+    box-shadow: 7px 7px 5px lightgray;
+}
+
+.post-btn:active{
+    box-shadow: none;
+}
+
+.feed-icon{
+    width: 40px;
+}
+
+/*Trending col*/
+
+
+.trends-friends-container{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.tf-tittle{
+    font-size: 25px;
+}
+
+.trends-list{
+    padding: 0;
+    list-style: none;
+}
+
+.trends{
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.trend-posts{
+    font-size: 13px;
+}
+
+/*orbit friends*/
+
+
+.friends-list{
+    text-align: center;
+    max-height: 370px;
+    overflow-y: auto;
+}
+
+.friends-list::-webkit-scrollbar{
+    width: 10px;
+}
+
+.friends-list::-webkit-scrollbar-track{
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+.friends-list::-webkit-scrollbar-thumb{
+    background-color: black;
+    border-radius: 10px;
 }

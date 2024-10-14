@@ -25,10 +25,10 @@
           </button>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" href="Account.html">Account</a>
+              <a class="dropdown-item btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#accountModal" id="account-link">Account</a>
             </li>
             <li>
-              <a class="dropdown-item" href="Login.html">Loggout</a>
+              <a class="dropdown-item" href="/loggout">Loggout</a>
             </li>
           </ul>
         </div>
@@ -38,7 +38,55 @@
 </nav>
 
 <div class="container">
+
+  <div class="modal fade" id="accountModal" tabindex="-1" aria-hidden="true" aria-labelledby="accountModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content align-items-center">
+        <div class="modal-header">
+          <h1 class="modal-title" id="accountModalLabel">UPDATE ACCOUNT</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form action="update" method="POST">
+            <div class="mb-2">
+              <input type="text" placeholder="First Name" class="pf-update" name="Fname-update"/>
+              <input type="text" placeholder="Last Name" class="pf-update" name="Lname-update"/>
+            </div>
+            <div class="mb-2">
+              <textarea
+                rows="5"
+                cols="49"
+                placeholder="Profile bio..."
+                class="pf-update"
+                name="bio-update"
+              ></textarea>
+            </div>
+            <hr />
+            <button type="submit" class="update-btn">UPDATE</button>
+          </form>
+          <hr/>
+          <div class="dlt-modal-btn">
+            <button
+              type="button"
+              class="btn btn-danger mb-2"
+              data-bs-toggle="modal"
+              data-bs-target="#dltAccountModal"
+            >
+              DELETE ACCOUNT
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="row">
+   
     <div class="col-8">
       <div class="the-feeds-container">
         <div class="mb-3 shadown-sm">
@@ -51,8 +99,10 @@
                 <div class="card-body">
                   <div class="card-title pf-name">Full Name</div>
                   <p class="card-text pf-bio">
-                    This is my bio all about me, get to know meand lets have
-                    fun....
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.....
                   </p>
                 </div>
               </div>
@@ -61,14 +111,61 @@
         </div>
 
         <div class="my-msg mb-3 shadow-sm">
-          <input type="text" placeholder="What's on your mind?" class="msg" />
+          <form action="/post" method="post" id="postForm" class="row">
+            <div class="col-12 col-md-8 mt-2">
+              <input
+                  placeholder="What's on your mind?"
+                  class="msg"
+                  id="myMsg"
+                  name="myPost"
+                  maxlength="50"
+                  autocomplete="off"
+                  required
+              />
+          </div>
+          <div class="col-12 col-md-4 mt-2">
+              <button type="submit" class="post-btn" id="postBtn">Post</button>
+          </div>
+          </form>
+          
           <hr />
         </div>
 
-<div class="the-feed">
-    
-</div>
+        <div class="the-feed"></div>
+      </div>
+    </div>
 
+    <div class="col trends-friends">
+      <div class="mb-3 trends-friends-container shadow-sm">
+        <div>
+          <h2 class="tf-tittle">Trending</h2>
+          <hr />
+          <ul class="trends-list">
+            <li>
+              <span class="trends">NBA</span><br /><span class="trend-posts"
+                ><%=((Math.random()* 30)+1).toFixed(1)%>k posts</span
+              >
+            </li>
+            <hr />
+            <li>
+              <span class="trends">CANADA</span><br /><span class="trend-posts"
+                ><%=((Math.random()* 30)+1).toFixed(1)%>k posts</span
+              >
+            </li>
+            <hr />
+            <li>
+              <span class="trends">OLYMPICS</span><br /><span
+                class="trend-posts"
+                ><%=((Math.random()* 30)+1).toFixed(1)%>k posts</span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="trends-friends-container shadow-sm">
+        <h2 class="text-center tf-tittle">Orbit Users</h2>
+        <ul class="friends-list"></ul>
       </div>
     </div>
   </div>

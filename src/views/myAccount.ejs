@@ -54,8 +54,8 @@
         <div class="modal-body">
           <form action="update" method="POST">
             <div class="mb-2">
-              <input type="text" placeholder="First Name" class="pf-update" name="Fname-update"/>
-              <input type="text" placeholder="Last Name" class="pf-update" name="Lname-update"/>
+              <input type="text" placeholder="First Name" class="pf-update" name="fname-update"/>
+              <input type="text" placeholder="Username" class="pf-update" name="username-update"/>
             </div>
             <div class="mb-2">
               <textarea
@@ -97,7 +97,8 @@
               </div>
               <div class="col-8">
                 <div class="card-body">
-                  <div class="card-title pf-name">Full Name</div>
+                  <div class="card-title pf-name">First Name</div>
+                    <div class="card-subtitle mb-2 text-body-secondary">@firstName</div>
                   <p class="card-text pf-bio">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
@@ -112,19 +113,19 @@
 
         <div class="my-msg mb-3 shadow-sm">
           <form action="/post" method="post" id="postForm" class="row">
-            <div class="col-12 col-md-8 mt-2">
+            <div class="col-12 col-md-9 mt-2">
               <input
                   placeholder="What's on your mind?"
                   class="msg"
                   id="myMsg"
                   name="myPost"
-                  maxlength="50"
+                  maxlength="100"
                   autocomplete="off"
                   required
               />
           </div>
-          <div class="col-12 col-md-4 mt-2">
-              <button type="submit" class="post-btn" id="postBtn">Post</button>
+          <div class="col-12 col-md-3 mt-2">
+              <button type="submit" class="post-btn" id="postBtn">POST</button>
           </div>
           </form>
           
@@ -163,9 +164,13 @@
         </div>
       </div>
 
-      <div class="trends-friends-container shadow-sm">
+      <div class="mb-3 trends-friends-container shadow-sm">
+        <div>
         <h2 class="text-center tf-tittle">Orbit Users</h2>
-        <ul class="friends-list"></ul>
+        <hr/>
+        <ul class="friends-list">
+        </ul>
+        </div>
       </div>
     </div>
   </div>

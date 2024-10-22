@@ -8,7 +8,7 @@
 <div class="col-7 log-card">
           <div class="card p-3 shadow-sm ">
             <h2 class="card-title mb-4">Login</h2>
-            <form action="/login" method="get" id="loginForm">
+            <form action="/login" method="post" id="loginForm">
               <div class="mb-2">
                 <input type="text" placeholder="Username" name="username" class="ls-input" required/>
               </div>
@@ -26,9 +26,9 @@
       <div class="col-7 sign-card d-none">
         <div class="card p-3 shadow-sm">
           <h2 class="card-title mb-4">Signup</h2>
-          <form action="/signup" method="POST" id="signForm">
+          <form action="/signup" method="post" id="signForm">
               <div class="mb-2">
-                  <input type="text" placeholder="First Name" name="fname" id="signfname" class="ls-input" required/>
+                  <input type="text" placeholder="First Name" name="fName" id="signfname" class="ls-input" required/>
                 </div>
             <div class="mb-2">
               <input type="text" placeholder="Username" name="username" class="ls-input" id="signusername" required/>

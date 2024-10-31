@@ -25,7 +25,14 @@
           </button>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#accountModal" id="account-link">Account</a>
+              <a
+                class="dropdown-item btn btn-primary"
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#accountModal"
+                id="account-link"
+                >Account</a
+              >
             </li>
             <li>
               <a class="dropdown-item" href="/loggout">Loggout</a>
@@ -38,8 +45,13 @@
 </nav>
 
 <div class="container">
-
-  <div class="modal fade" id="accountModal" tabindex="-1" aria-hidden="true" aria-labelledby="accountModalLabel">
+  <div
+    class="modal fade"
+    id="accountModal"
+    tabindex="-1"
+    aria-hidden="true"
+    aria-labelledby="accountModalLabel"
+  >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content align-items-center">
         <div class="modal-header">
@@ -54,8 +66,12 @@
         <div class="modal-body">
           <form action="update" method="POST">
             <div class="mb-2">
-              <input type="text" placeholder="First Name" class="pf-update" name="fname-update"/>
-              <input type="text" placeholder="Username" class="pf-update" name="username-update"/>
+              <input
+                type="text"
+                placeholder="First Name"
+                class="pf-update"
+                name="fnUpdate"
+              />
             </div>
             <div class="mb-2">
               <textarea
@@ -63,13 +79,13 @@
                 cols="49"
                 placeholder="Profile bio..."
                 class="pf-update"
-                name="bio-update"
+                name="bioUpdate"
               ></textarea>
             </div>
             <hr />
             <button type="submit" class="update-btn">UPDATE</button>
           </form>
-          <hr/>
+          <hr />
           <div class="dlt-modal-btn">
             <button
               type="button"
@@ -86,7 +102,6 @@
   </div>
 
   <div class="row">
-   
     <div class="col-8">
       <div class="the-feeds-container">
         <div class="mb-3 shadown-sm">
@@ -97,13 +112,16 @@
               </div>
               <div class="col-8">
                 <div class="card-body">
-                  <div class="card-title pf-name">First Name</div>
-                    <div class="card-subtitle mb-2 text-body-secondary">@firstName</div>
+                  <div class="card-title pf-name"><%=firstName%></div>
+                  <div class="card-subtitle mb-2 text-body-secondary">
+                    @<%=username%>
+                  </div>
                   <p class="card-text pf-bio">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.....
+                    <% if (pfBio === null) { %> 
+                      Create your own unique profile bio by navigating to your Profile, then account...
+                  <% } else { %>
+                      <%= pfBio %>
+                  <% } %>
                   </p>
                 </div>
               </div>
@@ -115,20 +133,20 @@
           <form action="/post" method="post" id="postForm" class="row">
             <div class="col-12 col-md-9 mt-2">
               <input
-                  placeholder="What's on your mind?"
-                  class="msg"
-                  id="myMsg"
-                  name="myPost"
-                  maxlength="100"
-                  autocomplete="off"
-                  required
+                placeholder="What's on your mind?"
+                class="msg"
+                id="myMsg"
+                name="myPost"
+                maxlength="100"
+                autocomplete="off"
+                required
               />
-          </div>
-          <div class="col-12 col-md-3 mt-2">
+            </div>
+            <div class="col-12 col-md-3 mt-2">
               <button type="submit" class="post-btn" id="postBtn">POST</button>
-          </div>
+            </div>
           </form>
-          
+
           <hr />
         </div>
 
@@ -166,10 +184,9 @@
 
       <div class="mb-3 trends-friends-container shadow-sm">
         <div>
-        <h2 class="text-center tf-tittle">Orbit Users</h2>
-        <hr/>
-        <ul class="friends-list">
-        </ul>
+          <h2 class="text-center tf-tittle">Orbit Users</h2>
+          <hr />
+          <ul class="friends-list"></ul>
         </div>
       </div>
     </div>

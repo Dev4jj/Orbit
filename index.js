@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import path from 'path';
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
@@ -29,6 +30,12 @@ app.set('views', path.join(__dirname, 'src', 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended:true}));
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {secure: false}
+}));
 
 let access = true; // check databse if user info matches then set access to true or false
 
@@ -84,9 +91,13 @@ app.post('/login', async(req, res)=>{
             console.log("Login attempt with invalid password for username:", username);
             return res.status(400).json({message: "Invalid password"});
         }
+
+req.session.username= user.username;
+
     access = true;
-    res.render("index", {access});
-    console.log('User is logged in');
+    console.log('User is logged in', user.username);
+    return res.render("index", {access, firstName: user.first_name, username: user.username, pfBio: user.bio});
+    
     }catch(err){
         console.log(err);
         res.status(500).json({message: "Server error"});
@@ -103,10 +114,46 @@ app.post("/post", (req, res)=>{
 
 //user updates profile
 
-app.post("/update", (req, res)=>{
-    res.render("index", {access});
+app.post("/update", async(req, res)=>{
+    const{fnUpdate, bioUpdate} = req.body
+    const {username} = req.session;
+
+    if(!fnUpdate && !bioUpdate){
+        return res.status(400).send("No fields to update.")
+    }
+
+    try{
+
+        const userCheck = await db.query('SELECT * FROM users WHERE username = $1', [username]);
+        const userExists = userCheck.rows.length > 0;
+
+        if(!userExists){
+           console.log(err);
+        }
+
+        if(fnUpdate){
+            await db.query('UPDATE users SET first_name = $1 WHERE username = $2', [fnUpdate, username]);
+            console.log("First name updated");
+        }
+
+        if(bioUpdate){
+            await db.query('UPDATE users SET bio = $1 WHERE username =  $2', [bioUpdate, username]);
+            console.log("Bio updated");
+        }
+
+        const userRes = await db.query('SELECT * FROM users WHERE username = $1', [username]);
+        const user = userRes.rows[0];
+
     console.log("User account updated");
     console.log(req.body);
+    console.log(username);
+    console.log(user);
+    res.render("index", {access, firstName: user.first_name, username: user.username, pfBio: user.bio});
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({message: "Error updating user account"});
+    }
 })
 
 //user navigates to loggout

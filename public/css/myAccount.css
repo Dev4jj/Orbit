@@ -41,6 +41,7 @@ body{
     background-color:  rgba(211, 211, 211, 0.219);
     padding: 5px;
     border: none;
+    width: 100%;
     }
     
     .update-btn{
@@ -63,7 +64,7 @@ body{
 /* the feed */
 .the-feeds-container{
     overflow-y: scroll;
-    height: 80vh;
+    height: 90vh;
     scrollbar-width: none;
 }
 
@@ -107,7 +108,7 @@ body{
     width: 100%;
     background-color: white;
     padding: 5px 20px;
-    border-radius: 5px;
+    border-radius: 20px;
 
 }
 

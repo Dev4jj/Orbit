@@ -11,6 +11,32 @@ document.addEventListener("DOMContentLoaded", function() {
             document.querySelector(".sign-card").classList.add("d-none");
             document.querySelector(".log-card").classList.remove("d-none");
         }
+        if(e.target.matches("#confirmDlt")){
+            const dltInput = prompt("Deleting your account is a permanent action, please confirm by typing YES:");
+            if (dltInput === "YES") {
+                console.log("Account deletion confirmed.");
+                // Add your account deletion logic here
+
+                fetch("/delete-account", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }, 
+                    body: JSON.stringify({confirmed: true}),
+                }).then(response => {
+                    if (!response.ok){
+                        console.log("Account deleting successfully.");
+                    }else{
+                        console.log("Error deleting account.");
+                    }
+                }).catch(error=>{
+                    console.error("Error:", error);
+                })
+            } else {
+                console.log("Account deletion canceled.");
+            }
+        
+        }
     });
 
 });

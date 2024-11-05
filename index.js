@@ -28,6 +28,7 @@ db.connect();
 app.set('view engine', 'ejs' );
 app.set('views', path.join(__dirname, 'src', 'views'));
 
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended:true}));
 app.use(session({
@@ -37,7 +38,7 @@ app.use(session({
     cookie: {secure: false}
 }));
 
-let access = true; // check databse if user info matches then set access to true or false
+let access = false; // check databse if user info matches then set access to true or false
 
 app.get('/', (req, res)=>{
     res.render("index", {access});
@@ -106,7 +107,8 @@ req.session.username= user.username;
 
 //user makes a post
 
-app.post("/post", (req, res)=>{
+app.post("/post", (req, res)=>{ 
+    access = true;
     res.render("index", {access});
     console.log("User made a post");
     console.log(req.body);
@@ -115,11 +117,11 @@ app.post("/post", (req, res)=>{
 //user updates profile
 
 app.post("/update", async(req, res)=>{
-    const{fnUpdate, bioUpdate} = req.body
+    const{fnUpdate, bioUpdate} = req.body;
     const {username} = req.session;
 
     if(!fnUpdate && !bioUpdate){
-        return res.status(400).send("No fields to update.")
+        return ( res.status(400).send("No fields to update."))
     }
 
     try{
@@ -148,6 +150,7 @@ app.post("/update", async(req, res)=>{
     console.log(req.body);
     console.log(username);
     console.log(user);
+    access = true;
     res.render("index", {access, firstName: user.first_name, username: user.username, pfBio: user.bio});
 
     }catch(err){
@@ -162,7 +165,38 @@ app.get("/loggout", (req, res)=>{
    access = false;
     res.render("index", {access});
     console.log("user logged out");
-})
+});
+
+app.post("/delete-account", async(req, res)=>{
+const{confirmed} = req.body;
+const {username} = req.session;
+
+console.log(req.body)
+
+if(!username){
+    return res.status(401).send({message: "User cant be identified"})
+}
+
+if(confirmed){
+    try{
+    console.log("Deleting account...");
+    await db.query('DELETE FROM users WHERE username = $1', [username]);
+
+        req.session.destroy((err)=>{
+            if(err){return req.status(500).send({message: "Error while logging out."})}
+        });
+
+    access = false;
+    res.render("index", {access});
+    
+    }catch(error){
+      console.error("Error deleting account:", error);
+      return res.status(500).send({message: "An error occurred while deleting the account."});
+    }
+}else{
+    return res.status(400).send({message: "Account deletion not confirmed"});
+}
+});
 
 app.listen(port, ()=>{
     console.log(`Server is running on port ${port}`);

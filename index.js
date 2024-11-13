@@ -35,7 +35,9 @@ app.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: {secure: false}
+    cookie: {secure: false,
+        maxAge: 1000 * 60 * 60 * 24,
+    }
 }));
 
 let access = false; // check databse if user info matches then set access to true or false
@@ -95,9 +97,8 @@ app.post('/login', async(req, res)=>{
 
 req.session.username= user.username;
 
-    access = true;
     console.log('User is logged in', user.username);
-    return res.render("index", {access, firstName: user.first_name, username: user.username, pfBio: user.bio});
+    return res.redirect("/profile");
     
     }catch(err){
         console.log(err);
@@ -105,13 +106,48 @@ req.session.username= user.username;
     }
 });
 
+app.get("/profile", (req, res)=>{
+    if(!req.session.username){
+        return res.redirect("/login");
+    }
+
+    const username = req.session.username;
+
+    db.query('SELECT * FROM users WHERE username = $1', [username], (err, result)=>{
+        if(err){
+            return res.status(500).json({message: "Error occured while fetching user data"})
+        }
+        const user = result.rows[0];
+        console.log(user);
+        access = true;
+        res.render("index", {access, user});
+    });
+})
+
 //user makes a post
 
-app.post("/post", (req, res)=>{ 
-    access = true;
-    res.render("index", {access});
+app.post("/post", async(req, res)=>{ 
+    const {username} = req.session;
+    const {myPost} = req.body;
+
+    if(!username){
+        return res.status(401).redirect('/login');
+    }
+
+    try{
+    const userRes = await db.query('SELECT * FROM users WHERE username = $1', [username]);
+    const user = userRes.rows[0];
+
+    //Logic for a post
+
     console.log("User made a post");
-    console.log(req.body);
+    console.log(myPost);
+
+    res.redirect("/profile");
+    
+    }catch(err){
+        console.log(err);
+    }
 })
 
 //user updates profile
@@ -150,8 +186,7 @@ app.post("/update", async(req, res)=>{
     console.log(req.body);
     console.log(username);
     console.log(user);
-    access = true;
-    res.render("index", {access, firstName: user.first_name, username: user.username, pfBio: user.bio});
+    res.redirect("/profile");
 
     }catch(err){
         console.log(err);
@@ -188,7 +223,7 @@ if(confirmed){
 
     access = false;
     res.render("index", {access});
-    
+    res.json({message: "Account deleted successfully"});
     }catch(error){
       console.error("Error deleting account:", error);
       return res.status(500).send({message: "An error occurred while deleting the account."});

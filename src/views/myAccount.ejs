@@ -112,15 +112,15 @@
               </div>
               <div class="col-8">
                 <div class="card-body">
-                  <div class="card-title pf-name"><%=firstName%></div>
+                  <div class="card-title pf-name"><%=user.first_name%></div>
                   <div class="card-subtitle mb-2 text-body-secondary">
-                    @<%=username%>
+                    @<%=user.username%>
                   </div>
                   <p class="card-text pf-bio">
-                    <% if (pfBio === null) { %> 
+                    <% if (user.bio === null) { %> 
                       Create your own unique profile bio by navigating to your Profile, then account...
                   <% } else { %>
-                      <%= pfBio %>
+                      <%= user.bio %>
                   <% } %>
                   </p>
                 </div>

@@ -53,7 +53,7 @@ app.post('/signup', async(req, res)=>{
     
 
 try{
-    const existingUser = await db.query('SELECT * FROM users WHERE username = $1', [username]);
+    const existingUser = await db.query(`SELECT * FROM users WHERE username = $1`, [username]);
     if (existingUser.rows.length > 0){
         return res.status(400).json({message: "Username already exists"});
     }
@@ -61,7 +61,7 @@ try{
     const salt = await bcrypt.genSalt(10);
     const secPass = await bcrypt.hash(req.body.password, salt);
 
-    await db.query('INSERT INTO users (first_name, username, password) VALUES ($1, $2, $3)', [fName, username, secPass]);
+    await db.query(`INSERT INTO users (first_name, username, password) VALUES ($1, $2, $3)`, [fName, username, secPass]);
     console.log("user was created");
     res.render("index", {access});
     
@@ -77,7 +77,7 @@ app.post('/login', async(req, res)=>{
     const {username, password}= req.body;
 
     try{
-        const userRes = await db.query('SELECT * FROM users WHERE username = $1', [username]);
+        const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [username]);
         const user = userRes.rows[0];
         console.log(password);
         console.log(user.password);
@@ -106,42 +106,67 @@ req.session.username= user.username;
     }
 });
 
-app.get("/profile", (req, res)=>{
-    if(!req.session.username){
-        return res.redirect("/login");
+
+app.get("/profile", async(req, res) => {
+    if (!req.session.username) {
+        return res.redirect("/login"); // Redirect to login if the user is not logged in
     }
 
     const username = req.session.username;
 
-    db.query('SELECT * FROM users WHERE username = $1', [username], (err, result)=>{
-        if(err){
-            return res.status(500).json({message: "Error occured while fetching user data"})
-        }
-        const user = result.rows[0];
-        console.log(user);
-        access = true;
-        res.render("index", {access, user});
-    });
-})
+    try{
+    
+    const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [username]);
+    const user = userRes.rows[0];
+
+    //all userd except logged in user
+    const usersNotYou = await db.query(`SELECT * FROM users WHERE username != $1`, [username])
+    const orbitUsers = usersNotYou.rows;
+
+if (!user) {
+    return res.status(404).json({ message: "User not found" });
+}
+        // Fetch all posts for users
+       const postRes = await db.query(`
+            SELECT users.first_name, users.username, posts.content, posts.created_at
+            FROM posts
+            JOIN users ON posts.user_id = users.id
+            ORDER BY posts.created_at DESC;
+        `);
+        const allPosts = postRes.rows;
+           
+            const access = true; 
+            res.render("index", { access, user, allPosts, orbitUsers });
+       
+}catch(err){
+    console.error("Error occurred while fetching user data or posts:", err);
+    return res.status(500).json({ message: "Server error" });
+}});
+
 
 //user makes a post
 
 app.post("/post", async(req, res)=>{ 
     const {username} = req.session;
-    const {myPost} = req.body;
+    const {content} = req.body;
 
     if(!username){
-        return res.status(401).redirect('/login');
+        return res.status(401).redirect('/profile');
     }
 
     try{
-    const userRes = await db.query('SELECT * FROM users WHERE username = $1', [username]);
+    const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [username]);
     const user = userRes.rows[0];
 
-    //Logic for a post
+    if(!user){
+        return res.status(400).json({message: "User not found."});
+    }
 
-    console.log("User made a post");
-    console.log(myPost);
+    //Logic for a post
+    await db.query(`INSERT INTO posts (user_id, content) VALUES ($1, $2)`, [user.id, content]);
+
+    console.log("User made a post:", content);
+    console.log(allPosts);
 
     res.redirect("/profile");
     
@@ -162,7 +187,7 @@ app.post("/update", async(req, res)=>{
 
     try{
 
-        const userCheck = await db.query('SELECT * FROM users WHERE username = $1', [username]);
+        const userCheck = await db.query(`SELECT * FROM users WHERE username = $1`, [username]);
         const userExists = userCheck.rows.length > 0;
 
         if(!userExists){
@@ -170,16 +195,16 @@ app.post("/update", async(req, res)=>{
         }
 
         if(fnUpdate){
-            await db.query('UPDATE users SET first_name = $1 WHERE username = $2', [fnUpdate, username]);
+            await db.query(`UPDATE users SET first_name = $1 WHERE username = $2`, [fnUpdate, username]);
             console.log("First name updated");
         }
 
         if(bioUpdate){
-            await db.query('UPDATE users SET bio = $1 WHERE username =  $2', [bioUpdate, username]);
+            await db.query(`UPDATE users SET bio = $1 WHERE username =  $2`, [bioUpdate, username]);
             console.log("Bio updated");
         }
 
-        const userRes = await db.query('SELECT * FROM users WHERE username = $1', [username]);
+        const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [username]);
         const user = userRes.rows[0];
 
     console.log("User account updated");
@@ -215,7 +240,7 @@ if(!username){
 if(confirmed){
     try{
     console.log("Deleting account...");
-    await db.query('DELETE FROM users WHERE username = $1', [username]);
+    await db.query(`DELETE FROM users WHERE username = $1`, [username]);
 
         req.session.destroy((err)=>{
             if(err){return req.status(500).send({message: "Error while logging out."})}

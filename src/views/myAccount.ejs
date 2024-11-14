@@ -136,7 +136,7 @@
                 placeholder="What's on your mind?"
                 class="msg"
                 id="myMsg"
-                name="myPost"
+                name="content"
                 maxlength="100"
                 autocomplete="off"
                 required
@@ -150,7 +150,23 @@
           <hr />
         </div>
 
-        <div class="the-feed"></div>
+        <div class="the-feed">
+
+          <% if(allPosts.length > 0){ %>
+          <% allPosts.forEach(post =>{%>
+          <div class="card mb-3">
+            <div class="card-body">
+              <h2 class="card-title fs-4"><%=post.first_name%></h2>
+              <h3 class="card-subtitle post-username text-body-secondary">@<%=post.username%></h3>
+              <p class="card-text post-txt"><%=post.content%></p>
+              <small><%= new Date(post.created_at).toLocaleString() %></small>
+              <div><input type="text" class="msg" placeholder="Add a comment..."/></div>
+              <hr/>
+            </div>
+          </div>
+          <%})}%>
+
+        </div>
       </div>
     </div>
 
@@ -186,7 +202,15 @@
         <div>
           <h2 class="text-center tf-tittle">Orbit Users</h2>
           <hr />
-          <ul class="friends-list"></ul>
+          <ul class="friends-list">
+            <% if(orbitUsers.length > 0){%>
+              <% orbitUsers.forEach(user => {%>
+                 <li>
+                  <strong><%=user.first_name%></strong>
+                  (@<%=user.username%>)
+                </li>
+             <% })}%>
+          </ul>
         </div>
       </div>
     </div>

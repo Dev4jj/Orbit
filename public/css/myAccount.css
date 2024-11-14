@@ -122,12 +122,22 @@ body{
     box-shadow: none;
 }
 
+.post-username{
+    font-size: 15px;
+}
+
+.post-txt{
+    font-size: 20px;
+}
+
 .feed-icon{
     width: 40px;
 }
 
 /*Trending col*/
-
+.trends-friends{
+    height: 90vh;
+}
 
 .trends-friends-container{
     background-color: white;

@@ -1,6 +1,7 @@
 body{
     height: 100%;
     margin: 0;
+    overflow: hidden;
 }
 
 .navbar-logo{
@@ -137,7 +138,9 @@ body{
 
 /*Trending col*/
 .trends-friends{
+    overflow-y: scroll;
     height: 90vh;
+    scrollbar-width: none;
 }
 
 .trends-friends-container{

@@ -1,4 +1,4 @@
-<nav class="navbar bg-white mb-3 shadow-sm">
+<nav class="navbar bg-white mb-1 shadow-sm">
   <div class="container">
     <div class="d-flex justify-content-between w-100">
       <a class="navbar-brand" href="#">
@@ -154,7 +154,7 @@
 
           <% if(allPosts.length > 0){ %>
           <% allPosts.forEach(post =>{%>
-          <div class="card mb-3">
+          <div class="card mb-3 shadow-sm">
             <div class="card-body">
               <h2 class="card-title fs-4"><%=post.first_name%></h2>
               <h3 class="card-subtitle post-username text-body-secondary">@<%=post.username%></h3>
@@ -172,7 +172,7 @@
 
     <div class="col trends-friends">
       <div class="mb-3 trends-friends-container shadow-sm">
-        <div>
+        <div class="col-12">
           <h2 class="tf-tittle">Trending</h2>
           <hr />
           <ul class="trends-list">
@@ -199,7 +199,7 @@
       </div>
 
       <div class="mb-3 trends-friends-container shadow-sm">
-        <div>
+        <div class="col-12">
           <h2 class="text-center tf-tittle">Orbit Users</h2>
           <hr />
           <ul class="friends-list">
@@ -209,6 +209,7 @@
                   <strong><%=user.first_name%></strong>
                   (@<%=user.username%>)
                 </li>
+                <hr/>
              <% })}%>
           </ul>
         </div>

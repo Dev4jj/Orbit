@@ -4,7 +4,7 @@ body{
 }
 
 .navbar-logo{
-    width:20px;
+    width:15px;
 }
 
 .search-div{
@@ -22,7 +22,7 @@ body{
 }
 
 .nav-icon{
-    width: 20px;
+    width: 15px;
     margin: 10px;
 }
 
@@ -62,6 +62,7 @@ body{
     }
 
 /* the feed */
+
 .the-feeds-container{
     overflow-y: scroll;
     height: 90vh;
@@ -153,7 +154,7 @@ body{
     font-size: 25px;
 }
 
-.trends-list{
+.trends-list, .friends-list{
     padding: 0;
     list-style: none;
 }

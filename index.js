@@ -108,6 +108,8 @@ req.session.username= user.username;
 
 
 app.get("/profile", async(req, res) => {
+    const searched = req.query.search || "";
+
     if (!req.session.username) {
         return res.redirect("/login"); // Redirect to login if the user is not logged in
     }
@@ -126,17 +128,23 @@ app.get("/profile", async(req, res) => {
 if (!user) {
     return res.status(404).json({ message: "User not found" });
 }
-        // Fetch all posts for users
+        // Fetch posts for users
+
+        
        const postRes = await db.query(`
             SELECT users.first_name, users.username, posts.content, posts.created_at
             FROM posts
             JOIN users ON posts.user_id = users.id
-            ORDER BY posts.created_at DESC;
-        `);
+            WHERE posts.content ILIKE $1
+         OR users.first_name ILIKE $1
+         OR users.username ILIKE $1
+      ORDER BY posts.created_at DESC;
+    `, [`%${searched}%`]);
+
         const allPosts = postRes.rows;
            
             const access = true; 
-            res.render("index", { access, user, allPosts, orbitUsers });
+            res.render("index", { access, user, allPosts, orbitUsers, searched });
        
 }catch(err){
     console.error("Error occurred while fetching user data or posts:", err);
@@ -166,7 +174,6 @@ app.post("/post", async(req, res)=>{
     await db.query(`INSERT INTO posts (user_id, content) VALUES ($1, $2)`, [user.id, content]);
 
     console.log("User made a post:", content);
-    console.log(allPosts);
 
     res.redirect("/profile");
     

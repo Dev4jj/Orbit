@@ -39,6 +39,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+
+
 });
 //basic form validation checks
 
@@ -60,3 +62,6 @@ document.getElementById("signForm").addEventListener("submit", function(e){
     }
 }
 );
+
+
+//filter posts

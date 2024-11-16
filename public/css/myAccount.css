@@ -74,6 +74,15 @@ body{
     display: none;
 }
 
+.feed-logo{
+    width: 16px;
+}
+
+.feed-title{
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 10px;
+}
 
 .pf-name{
     font-size: 30px;

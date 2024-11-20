@@ -79,20 +79,19 @@ app.post('/login', async(req, res)=>{
     try{
         const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [username]);
         const user = userRes.rows[0];
-        console.log(password);
         console.log(user.password);
     
 
         if(!user){
             console.log("Login attempt with invalid username:", username);
-            return res.status(400).json({message: "Invalid username or password"});
+            return res.redirect("/");
         }
 
         const checkPas = await bcrypt.compare(password, user.password);
 
         if (!checkPas){
             console.log("Login attempt with invalid password for username:", username);
-            return res.status(400).json({message: "Invalid password"});
+           return res.redirect("/");
         }
 
 req.session.username= user.username;
@@ -102,7 +101,7 @@ req.session.username= user.username;
     
     }catch(err){
         console.log(err);
-        res.status(500).json({message: "Server error"});
+        res.redirect("/");
     }
 });
 
@@ -182,6 +181,20 @@ app.post("/post", async(req, res)=>{
     }
 })
 
+//user makes a comment on post
+
+app.post("/post/comment", async(req, res)=>{
+    const{comment} = req.body;
+    const{username} = req.session;
+
+    if(!username){
+        return res.status(401).redirect('/profile');
+    }
+    
+    console.log(comment);
+    res.redirect("/profile");
+})
+
 //user updates profile
 
 app.post("/update", async(req, res)=>{
@@ -254,8 +267,9 @@ if(confirmed){
         });
 
     access = false;
-    res.render("index", {access});
     res.json({message: "Account deleted successfully"});
+    res.render("index", {access});
+    
     }catch(error){
       console.error("Error deleting account:", error);
       return res.status(500).send({message: "An error occurred while deleting the account."});

@@ -73,7 +73,7 @@
             <div class="mb-2">
               <input
                 type="text"
-                placeholder="First Name"
+                placeholder="First Name..."
                 class="pf-update"
                 name="fnUpdate"
               />
@@ -156,7 +156,7 @@
         </div>
 
         <div class="the-feed">
-          <h1 class="feed-title"><img src="/images/satellite.png" class="feed-logo"/> THE ORBIT</h1>
+          <h1 class="feed-title"> THE TIMELINE</h1>
           <% if(allPosts.length > 0){ %>
           <% allPosts.forEach(post =>{%>
           <div class="card mb-3 shadow-sm post" data-content="<%=post.content%>" data-username="<%=post.username%>">
@@ -165,8 +165,26 @@
               <h3 class="card-subtitle post-username text-body-secondary">@<%=post.username%></h3>
               <p class="card-text post-txt"><%=post.content%></p>
               <small><%= new Date(post.created_at).toLocaleString() %></small>
-              <div><input type="text" class="msg" placeholder="Add a comment..."/></div>
+              <div><form action="/post/comment" method="post">
+                <input type="hidden" name="post_id" value="<%=post.post_id%>"/>
+                <input type="hidden" name="user_id" value="<%=post.user_id%>"/>
+                <input type="text" class="msg" name="comment" placeholder="Add a comment..." required autocomplete="off"/></form></div>
               <hr/>
+              <div class="comment-section">
+                <% const postComments = allComments.filter(comment => comment.post_id === post.post_id) %>
+                <div class="comment">
+                  <% if(postComments.length > 0){ %>
+                    <% postComments.forEach(comment =>{ %>
+                  <div class="msg mt-2">
+                  <p class="comment-username">@<%= comment.comment_username %></p>
+                  <p class="comment-text"><%= comment.comment%></p>
+                  </div>
+                  <%});%>
+                  <%}else{%>
+                    <p>No comments</p>
+                    <%}%>
+                </div>
+              </div>
             </div>
           </div>
           <%})}else{%>

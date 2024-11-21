@@ -145,6 +145,18 @@ body{
     width: 40px;
 }
 
+.comment-username{
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.comment-text{
+    font-size: 14px;
+    margin: 0;
+}
+
+
 /*Trending col*/
 .trends-friends{
     overflow-y: scroll;

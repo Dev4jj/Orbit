@@ -131,7 +131,7 @@ if (!user) {
 
         
        const postRes = await db.query(`
-            SELECT users.first_name, users.username, posts.content, posts.created_at
+            SELECT users.first_name, users.username, users.id AS user_id, posts.id AS post_id, posts.content, posts.created_at
             FROM posts
             JOIN users ON posts.user_id = users.id
             WHERE posts.content ILIKE $1
@@ -140,10 +140,19 @@ if (!user) {
       ORDER BY posts.created_at DESC;
     `, [`%${searched}%`]);
 
+    //Fetch all comments
+
+        const commentRes = await db.query(`
+            SELECT comments.post_id, comments.comment, comments.comment_username, comments.created_at AS comment_at_time
+            FROM comments
+            ORDER BY comments.created_at DESC;
+            `);
+
         const allPosts = postRes.rows;
+        const allComments = commentRes.rows;
            
             const access = true; 
-            res.render("index", { access, user, allPosts, orbitUsers, searched });
+            res.render("index", { access, user, allPosts, orbitUsers, searched, allComments });
        
 }catch(err){
     console.error("Error occurred while fetching user data or posts:", err);
@@ -184,15 +193,28 @@ app.post("/post", async(req, res)=>{
 //user makes a comment on post
 
 app.post("/post/comment", async(req, res)=>{
-    const{comment} = req.body;
+    const{comment, post_id, user_id} = req.body;
     const{username} = req.session;
 
     if(!username){
         return res.status(401).redirect('/profile');
     }
-    
-    console.log(comment);
-    res.redirect("/profile");
+
+    if (!user_id || !comment || !post_id) {
+        return res.status(400).redirect('/profile');
+    }
+
+    console.log(comment, post_id, user_id, username);
+
+    try{
+
+        await db.query(`INSERT INTO comments (post_id, user_id, comment, comment_username) VALUES ($1, $2, $3, $4)`, [post_id, user_id, comment, username]);
+        console.log("User made a comment:", comment);
+
+        res.redirect("/profile");
+    }catch(err){
+        console.log(err);
+    }
 })
 
 //user updates profile

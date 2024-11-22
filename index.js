@@ -263,9 +263,15 @@ app.post("/update", async(req, res)=>{
 
 //user navigates to loggout
 
-app.get("/loggout", (req, res)=>{
-   access = false;
-    res.render("index", {access});
+app.get("/logout", (req, res)=>{
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).send({ message: "Error during logout." });
+        }
+        res.clearCookie("connect.sid"); 
+        
+        res.redirect('/')  // Redirect to login page after logout
+    });
     console.log("user logged out");
 });
 
@@ -282,15 +288,15 @@ if(!username){
 if(confirmed){
     try{
     console.log("Deleting account...");
+    await db.query(`DELETE FROM comments WHERE comment_username = $1`, [username]);
     await db.query(`DELETE FROM users WHERE username = $1`, [username]);
 
         req.session.destroy((err)=>{
-            if(err){return req.status(500).send({message: "Error while logging out."})}
+            if(err){return res.status(500).send({message: "Error while logging out."})}
         });
 
-    access = false;
-    res.json({message: "Account deleted successfully"});
-    res.render("index", {access});
+       // return res.status(200).send({ message: "Account deleted successfully." });
+       res.redirect('/');
     
     }catch(error){
       console.error("Error deleting account:", error);

@@ -40,7 +40,7 @@
               >
             </li>
             <li>
-              <a class="dropdown-item" href="/loggout">Loggout</a>
+              <a class="dropdown-item" href="/logout">Loggout</a>
             </li>
           </ul>
         </div>
@@ -168,7 +168,8 @@
               <div><form action="/post/comment" method="post">
                 <input type="hidden" name="post_id" value="<%=post.post_id%>"/>
                 <input type="hidden" name="user_id" value="<%=post.user_id%>"/>
-                <input type="text" class="msg" name="comment" placeholder="Add a comment..." required autocomplete="off"/></form></div>
+                <input type="text" class="msg" name="comment" placeholder="Add a comment..." required autocomplete="off"/>
+              </form></div>
               <hr/>
               <div class="comment-section">
                 <% const postComments = allComments.filter(comment => comment.post_id === post.post_id) %>

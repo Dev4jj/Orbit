@@ -12,8 +12,9 @@
               <div class="mb-2">
                 <input type="text" placeholder="Username" name="username" class="ls-input" required/>
               </div>
-              <div class="mb-3">
-                <input type="password" placeholder="Password" name="password" class="ls-input" required/>
+              <div class="mb-3 pass-container">
+                <input type="password" placeholder="Password" name="password" class="ls-input" id="logpassword" required/>
+                <input type="checkbox" class="show-log"/>
               </div>
               <div><button type="submit" class="ls-btn" id="loginBtn">Login</button></div>
             </form>
@@ -33,8 +34,9 @@
             <div class="mb-2">
               <input type="text" placeholder="Username" name="username" class="ls-input" id="signusername" required/>
             </div>
-            <div class="mb-3">
+            <div class="mb-3 pass-container">
               <input type="password" placeholder="Password" name="password" class="ls-input" id="signpassword" required/>
+              <input type="checkbox" class="show-sign"/>
             </div>
             <div><button type="submit" class="ls-btn">Signup</button></div>
           </form>

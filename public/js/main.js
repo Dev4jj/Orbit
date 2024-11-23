@@ -67,6 +67,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     });
 
+    //basic form validation checks
+
 document.getElementById("signForm").addEventListener("submit", function(e){
 
     let username = document.getElementById("signusername").value;
@@ -87,9 +89,3 @@ document.getElementById("signForm").addEventListener("submit", function(e){
 );
 
 });
-//basic form validation checks
-
-
-
-
-//filter posts

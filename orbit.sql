@@ -30,3 +30,9 @@ CREATE TABLE comments(
     FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE session (
+  sid VARCHAR PRIMARY KEY,     
+  sess JSONB,                      
+  expire TIMESTAMP WITH TIME ZONE NOT NULL
+);

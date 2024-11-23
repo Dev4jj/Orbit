@@ -5,7 +5,11 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import bcrypt from 'bcryptjs';
 import pg from "pg";
+import connectPgSimple from "connect-pg-simple";
+
+
 const app = express();
+const pgSession = connectPgSimple(session);
 dotenv.config();
 const port = process.env.PORT || 8000;
 const __filename = fileURLToPath(import.meta.url);
@@ -23,7 +27,6 @@ port: process.env.DB_PORT,
 });
 db.connect();
 
-//create future database with postgres
 
 app.set('view engine', 'ejs' );
 app.set('views', path.join(__dirname, 'src', 'views'));
@@ -32,6 +35,10 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended:true}));
 app.use(session({
+    store: new pgSession({
+        pool: db,
+        tableName: 'session',
+    }),
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
@@ -79,9 +86,7 @@ app.post('/login', async(req, res)=>{
     try{
         const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [username]);
         const user = userRes.rows[0];
-        console.log(user.password);
     
-
         if(!user){
             console.log("Login attempt with invalid username:", username);
             return res.redirect("/");
@@ -110,7 +115,7 @@ app.get("/profile", async(req, res) => {
     const searched = req.query.search || "";
 
     if (!req.session.username) {
-        return res.redirect("/login"); // Redirect to login if the user is not logged in
+        return res.redirect("/login"); 
     }
 
     const username = req.session.username;
@@ -120,7 +125,7 @@ app.get("/profile", async(req, res) => {
     const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [username]);
     const user = userRes.rows[0];
 
-    //all userd except logged in user
+    //all users except logged in user
     const usersNotYou = await db.query(`SELECT * FROM users WHERE username != $1`, [username])
     const orbitUsers = usersNotYou.rows;
 
@@ -204,8 +209,6 @@ app.post("/post/comment", async(req, res)=>{
         return res.status(400).redirect('/profile');
     }
 
-    console.log(comment, post_id, user_id, username);
-
     try{
 
         await db.query(`INSERT INTO comments (post_id, user_id, comment, comment_username) VALUES ($1, $2, $3, $4)`, [post_id, user_id, comment, username]);
@@ -245,14 +248,6 @@ app.post("/update", async(req, res)=>{
             await db.query(`UPDATE users SET bio = $1 WHERE username =  $2`, [bioUpdate, username]);
             console.log("Bio updated");
         }
-
-        const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [username]);
-        const user = userRes.rows[0];
-
-    console.log("User account updated");
-    console.log(req.body);
-    console.log(username);
-    console.log(user);
     res.redirect("/profile");
 
     }catch(err){
@@ -270,7 +265,7 @@ app.get("/logout", (req, res)=>{
         }
         res.clearCookie("connect.sid"); 
         
-        res.redirect('/')  // Redirect to login page after logout
+        res.redirect('/')  
     });
     console.log("user logged out");
 });
@@ -278,8 +273,6 @@ app.get("/logout", (req, res)=>{
 app.post("/delete-account", async(req, res)=>{
 const{confirmed} = req.body;
 const {username} = req.session;
-
-console.log(req.body)
 
 if(!username){
     return res.status(401).send({message: "User cant be identified"})
@@ -295,7 +288,6 @@ if(confirmed){
             if(err){return res.status(500).send({message: "Error while logging out."})}
         });
 
-       // return res.status(200).send({ message: "Account deleted successfully." });
        res.redirect('/');
     
     }catch(error){

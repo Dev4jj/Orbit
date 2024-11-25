@@ -2,7 +2,7 @@ CREATE DATABASE orbit;
 
 USE orbit;
 
-CREATE TABLE users( 
+CREATE TABLE IF NOT EXISTS users( 
 id SERIAL PRIMARY KEY,
 first_name VARCHAR(50) NOT NULL,
 username VARCHAR(50) NOT NULL UNIQUE,
@@ -11,7 +11,7 @@ bio TEXT
 );
 
 
-CREATE TABLE posts(
+CREATE TABLE IF NOT EXISTS posts(
 id SERIAL PRIMARY KEY,
 user_id INT NOT NULL,
 content TEXT NOT NULL,
@@ -20,7 +20,7 @@ FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 
-CREATE TABLE comments(
+CREATE TABLE IF NOT EXISTS comments(
     id SERIAL PRIMARY KEY,
     post_id INT NOT NULL,
     user_id INT NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE comments(
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE session (
+CREATE TABLE IF NOT EXISTS session (
   sid VARCHAR PRIMARY KEY,     
   sess JSONB,                      
   expire TIMESTAMP WITH TIME ZONE NOT NULL

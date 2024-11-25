@@ -24,8 +24,10 @@ database: process.env.DB,
 password: process.env.DB_PASSWORD,
 port: process.env.DB_PORT,
 });
-db.connect();
 
+db.connect()
+.then(() => console.log('Connected to the database'))
+.catch(err => console.error('Connection error', err.stack));
 
 app.set('view engine', 'ejs' );
 app.set('views', path.join(__dirname, 'src', 'views'));

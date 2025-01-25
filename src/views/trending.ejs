@@ -1,0 +1,81 @@
+<!--<nav class="navbar bg-white mb-1 shadow-sm sticky-top">
+  <div class="container">
+    <div class="d-flex justify-content-between w-100">
+      <a class="navbar-brand" href="#">
+        <img src="/images/satellite.png" class="navbar-logo" /> ORBIT
+      </a>
+     
+      <div class="d-flex">
+        <a class="nav-link mb-2" href="/profile"
+          ><img src="/images/home.png" class="page-nav-img" alt="My home page"
+        /></a>
+        <a class="nav-link active mb-2" aria-current="page" href="#"
+          ><img src="/images/hashtag.png" class="page-nav-img" alt="Trends"
+        /></a>
+        <a class="nav-link mb-2" href="#"
+          ><img src="/images/friends.png" class="page-nav-img" alt="Users"
+        /></a>
+        <a class="nav-link mb-2" href="#"
+          ><img src="/images/chat.png" class="page-nav-img" alt="Messages"
+        /></a>
+
+        <div class="d-flex align-items-center">
+          <div class="dropdown-center pf-dropdown-btn ms-2">
+            <button
+              class="btn dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              id="profileDropdown"
+              aria-expanded="false"
+            >
+              <img class="nav-icon" src="/images/profile-user.png" />Profile
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a
+                  class="dropdown-item btn btn-primary"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#accountModal"
+                  id="account-link"
+                  >Account</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="/logout">Loggout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>-->
+
+<%- include("navbar.ejs", {searchBar:false, searched: ''})%>
+
+<div class="container">
+  <div class="trends-div">
+    <h1 class="trend-title">TRENDING TOPICS</h1>
+      <%trends.forEach((trend, index)=>{%>
+      <div class="row">
+        <div class="col-12">
+          <div class="card trend-card">
+            <div class="card-body d-flex">
+                <div class="col-md-1 me-2"><p class="rank-num text-body-secondary"><%=index + 1%></p></div>
+              <div class="col-md-9">
+                <h2 class="card-title">
+                    <%=trend.topic%>:</h2>
+                <p class="card-text text-body-secondary"><%=trend.snippet%> -</p>
+              </div>
+              <div class="col-2 text-end search-vol">
+                <%=trend.volume%>
+                <p class="search-txt text-body-secondary">Searches</p>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%});%>
+  </div>
+</div>

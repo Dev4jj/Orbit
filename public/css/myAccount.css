@@ -1,7 +1,7 @@
 body{
     height: 100%;
     margin: 0;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .navbar-logo{
@@ -36,6 +36,23 @@ body{
     border-radius: 10px;
 }
 
+/* page navigator imgs*/
+
+.page-nav-img{
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    font-weight: bold;
+    width: 40px;
+    border-radius: 5px;
+}
+
+.page-nav-img:hover{
+    background-color: rgba(211, 211, 211, 0.171);
+}
+
+
 /* update account styling */
 
 .pf-update{
@@ -65,13 +82,19 @@ body{
 /* the feed */
 
 .the-feeds-container{
-    overflow-y: scroll;
+    /*overflow-y: auto;
+    overflow-x: hidden;*/
     height: 90vh;
-    scrollbar-width: none;
+    
+}
+.the-feeds-container{
+    margin-left: 200px;
 }
 
-.the-feeds-container::-webkit-scrollbar{
-    display: none;
+.the-feeds-container::-webkit-scrollbar-track{
+    /*display: none;*/
+    width:50px;
+    border-radius: 30px;
 }
 
 .feed-logo{

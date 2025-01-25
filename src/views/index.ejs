@@ -5,19 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Orbit</title>
     <link rel="icon" type="image/png" href="/images/satellite.png"/>
-    <% if(access == false){%>
+    <% if(access == 0){%>
     <link rel="stylesheet" href="/css/index.css"/>
-    <%}else{%>
+    <%}else if(access == 1){%>
       <link rel="stylesheet" href="/css/myAccount.css"/>
-      <%}%>
+      <%}else if(access == 2){%>
+        <link rel="stylesheet" href="/css/trending.css"/>
+        <%}%>
+    <link rel="stylesheet" href="/css/navbar.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
   </head>
   <body class="bg-light">
 
-  <%if (access == false){%>
+  <%if (access == 0){%>
 <%- include("accessPage.ejs")%>
-<%} else{%>
+<%} else if(access == 1){%>
 <%- include("myAccount.ejs")%>
+<%}else if(access == 2){%>
+  <%- include("trending.ejs")%>
 <%}%>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/main.js"></script>

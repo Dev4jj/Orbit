@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import bcrypt from 'bcryptjs';
 import pg from "pg";
 import connectPgSimple from "connect-pg-simple";
+import googleTrends from "google-trends-api";
+import he from "he";
 
 
 const app = express();
@@ -48,7 +50,7 @@ app.use(session({
     }
 }));
 
-let access = false; // check databse if user info matches then set access to true or false
+let access = 0; // check databse if user info matches then set access to true or false
 
 app.get('/', (req, res)=>{
     res.render("index", {access});
@@ -56,10 +58,9 @@ app.get('/', (req, res)=>{
 
 // check if user already exists in future database
 app.post('/signup', async(req, res)=>{
-    access = false;
+    access = 0;
     const {fName, username} = req.body;
     
-
 try{
     const existingUser = await db.query(`SELECT * FROM users WHERE username = $1`, [username]);
     if (existingUser.rows.length > 0){
@@ -157,13 +158,79 @@ if (!user) {
         const allPosts = postRes.rows;
         const allComments = commentRes.rows;
            
-            const access = true; 
+            access = 1; 
             res.render("index", { access, user, allPosts, orbitUsers, searched, allComments });
        
 }catch(err){
     console.error("Error occurred while fetching user data or posts:", err);
     return res.status(500).json({ message: "Server error" });
 }});
+
+//trending page
+
+app.get("/trending", async(req, res)=>{
+const {username} = req.session;
+
+if(!username){
+    return res.status(401).redirect('/profile');
+}
+
+function volumeConverter(vol){
+if(!vol){return 0}
+
+const volStr = vol.replace(/[^\dKMB+]/g, ''); //regular expressions outout: replaces anything not specified(not: numbers, or K,M,B+)
+
+const volValue = parseFloat(volStr.replace(/[^\d]/g, '')); //output: replaces anything not specified(not: numbers)
+
+
+if(volStr.includes("K")){
+    return volValue * 1000;
+}else if(volStr.includes("M")){
+    return volValue * 1000000;
+}else{
+    return volValue;
+}
+}
+
+
+try{
+googleTrends.dailyTrends({
+    geo:'US',
+}, function(err, results){
+    
+    if(err){
+        console.log(err);
+    }else{
+        try{
+            
+            const parsedResults = JSON.parse(results);
+        const trendsArray = parsedResults.default.trendingSearchesDays.map((day) => {
+                return day.trendingSearches.map(trend => {
+                    return{
+                        topic: trend.title.query,
+                        volume: trend.formattedTraffic,
+                        snippet: he.decode(trend.articles[0]?.snippet)
+                    }
+                });
+        }) 
+        const flatArray = trendsArray.flat().slice(0,20);
+        const sortedTrends = flatArray.sort((a,b)=>{
+            return( volumeConverter(b.volume) - volumeConverter(a.volume))
+        });
+console.log(sortedTrends);
+access=2
+res.render("index", {access, trends: sortedTrends});
+    }catch(err){
+        console.log(err);
+    }
+    }
+});
+
+
+}catch(err){
+    console.log(err);
+}
+})
 
 
 //user makes a post
@@ -228,7 +295,8 @@ app.post("/update", async(req, res)=>{
     const {username} = req.session;
 
     if(!fnUpdate && !bioUpdate){
-        return ( res.status(400).send("No fields to update."))
+        console.log("No fields to update.");
+        return res.status(400).redirect("/profile");
     }
 
     try{

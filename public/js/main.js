@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //basic form validation checks
 
-document.getElementById("signForm").addEventListener("submit", function(e){
+    document.getElementById("signForm").addEventListener("submit", function(e){
 
     let username = document.getElementById("signusername").value;
     let password = document.getElementById("signpassword").value;
@@ -85,7 +85,7 @@ document.getElementById("signForm").addEventListener("submit", function(e){
         e.preventDefault();
         alert("Username can not be the same as the passoword.");
     }
-}
-);
+    }
+    );
 
 });

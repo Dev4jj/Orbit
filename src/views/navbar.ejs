@@ -1,0 +1,58 @@
+<nav class="navbar bg-white mb-1 shadow-sm sticky-top">
+    <div class="container">
+      <div class="d-flex justify-content-between w-100">
+        <a class="navbar-brand" href="#">
+          <img src="/images/satellite.png" class="navbar-logo" /> ORBIT
+        </a>
+  
+        <div class="mx-auto search-div <%=searchBar? 'visibleBar': 'hiddenBar'%>">
+          <form action="/profile" method="get">
+          <input
+            class="search-bar"
+            id="filterPost"
+            type="search"
+            name="search"
+            value="<%=searched%>"
+            placeholder="Search posts..."
+          />
+          </form>
+        </div>
+  
+        <div class="d-flex align-items-center">
+          
+    <a class="nav-link active mb-2" aria-current="page" href="/profile"><img src="/images/home.png" class="page-nav-img" alt="My home page"/></a>
+    <a class="nav-link mb-2" href="/trending"><img src="/images/hashtag.png" class="page-nav-img" alt="Trends"/></a>
+    <a class="nav-link mb-2" href="#"><img src="/images/friends.png" class="page-nav-img" alt="Users"/></a>
+    <a class="nav-link mb-2" href="#"><img src="/images/chat.png" class="page-nav-img" alt="Messages"/></a>
+        
+          <div class="dropdown-center pf-dropdown-btn ms-2">
+            
+            <button
+              class="btn dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              id="profileDropdown"
+              aria-expanded="false"
+            >
+              <img class="nav-icon" src="/images/profile-user.png" />Profile
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a
+                  class="dropdown-item btn btn-primary"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#accountModal"
+                  id="account-link"
+                  >Account</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="/logout">Loggout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>

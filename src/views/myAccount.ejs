@@ -1,4 +1,4 @@
-<nav class="navbar bg-white mb-1 shadow-sm sticky-top">
+<!--<nav class="navbar bg-white mb-1 shadow-sm sticky-top">
   <div class="container">
     <div class="d-flex justify-content-between w-100">
       <a class="navbar-brand" href="#">
@@ -17,8 +17,16 @@
         />
         </form>
       </div>
+   
+  <a class="nav-link active mb-2" aria-current="page" href="#"><img src="/images/home.png" class="page-nav-img" alt="My home page"/></a>
+  <a class="nav-link mb-2" href="/trending"><img src="/images/hashtag.png" class="page-nav-img" alt="Trends"/></a>
+  <a class="nav-link mb-2" href="#"><img src="/images/group.png" class="page-nav-img" alt="Users"/></a>
+  <a class="nav-link mb-2" href="#"><img src="/images/chat.png" class="page-nav-img" alt="Messages"/></a>
+      
+
       <div class="d-flex align-items-center">
         <div class="dropdown-center pf-dropdown-btn ms-2">
+          
           <button
             class="btn dropdown-toggle"
             type="button"
@@ -47,7 +55,9 @@
       </div>
     </div>
   </div>
-</nav>
+</nav>-->
+
+<%- include("navbar.ejs", {searchBar:true})%>
 
 <div class="container">
   <div
@@ -107,7 +117,13 @@
   </div>
 
   <div class="row">
-    <div class="col-8">
+
+    <nav class="nav ">
+      
+    </nav>
+  
+
+    <div class="col-10 feed-col">
       <div class="the-feeds-container">
         <div class="mb-3 shadown-sm">
           <div class="card">
@@ -195,7 +211,8 @@
       </div>
     </div>
 
-    <div class="col trends-friends">
+    <!--
+    <div class="col-2 trends-friends">
       <div class="mb-3 trends-friends-container shadow-sm">
         <div class="col-12">
           <h2 class="tf-tittle">Trending</h2>
@@ -240,5 +257,6 @@
         </div>
       </div>
     </div>
+  -->
   </div>
 </div>

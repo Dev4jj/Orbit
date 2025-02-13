@@ -7,19 +7,7 @@ body{
 /* the feed */
 
 .the-feeds-container{
-    /*overflow-y: auto;
-    overflow-x: hidden;*/
-    height: 90vh;
-    
-}
-.the-feeds-container{
-    margin-left: 200px;
-}
-
-.the-feeds-container::-webkit-scrollbar-track{
-    /*display: none;*/
-    width:50px;
-    border-radius: 30px;
+    height: 90vh; 
 }
 
 .feed-logo{
@@ -104,26 +92,3 @@ body{
     margin: 0;
 }
 
-
-/*orbit friends*/
-
-
-.friends-list{
-    text-align: center;
-    max-height: 370px;
-    overflow-y: auto;
-}
-
-.friends-list::-webkit-scrollbar{
-    width: 10px;
-}
-
-.friends-list::-webkit-scrollbar-track{
-    background-color: #ccc;
-    border-radius: 10px;
-}
-
-.friends-list::-webkit-scrollbar-thumb{
-    background-color: black;
-    border-radius: 10px;
-}

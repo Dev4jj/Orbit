@@ -1,10 +1,30 @@
+.user-req-div{
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
 #filter-users{
     width: 100%;
     padding: 10px;
     border-radius: 10px;
+    background-color: rgba(211, 211, 211, 0.123);
     border: 1px solid #ccc; 
 }
 
 .user-req-btn{
-    margin-right: 10px;
+    width: 100px;
+    padding: 10px;
+    border: none;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.user-req-btn:hover, .user-req-btn.active{
+    background-color: black;
+    color: white;
+}
+
+.user-list-fn{
+    font-size: 20px;
 }

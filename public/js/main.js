@@ -88,4 +88,16 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     );
 
+    //users page btns 
+    //fix functionality
+    const userReqBtns = document.querySelectorAll('.user-req-btn');
+
+    userReqBtns.forEach(button => {
+        button.addEventListener('click', () => {
+            
+            userReqBtns.forEach(btn => btn.classList.remove('active'));
+        
+            button.classList.add('active');
+        });
+    });
 });

@@ -229,15 +229,22 @@ res.render("index", {access, trends: sortedTrends});
 }
 })
 
-app.get("/users", (req, res)=>{
+app.get("/users", async(req, res)=>{
     const {username} = req.session;
 
     if(!username){
         return res.status(401).redirect('/profile');
     }
+    
+    try{
+    const usersNotYou = await db.query(`SELECT * FROM users WHERE username != $1`, [username])
+    const orbitUsers = usersNotYou.rows;
 
     access=3;
-    res.render("index", {access });
+    res.render("index", {access, orbitUsers });
+    }catch(err){
+    console.error("Error occurred while fetching user data or posts:", err);
+    }
 })
 
 

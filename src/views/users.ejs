@@ -1,17 +1,37 @@
-
 <%- include("navbar.ejs", {searchBar:false, searched: ''})%>
 
-<div class="container">
-<!--Conditional render the page h1 in future-->
-<h1>Users</h1>
-    <div class="row justify-content-between user-req-list mt-3">
-        <div class="col-8">
-        <input id="filter-users" type="text" name="filter-users" placeholder="Search Users"/>
-        </div>
-        <div class="col d-flex justify-content-end mb-3">
-        <button class="user-req-btn btn btn-outline-dark">Users</button>
-        <button class="user-req-btn btn btn-outline-dark">Requests</button>
-        </div>
-        <hr>
+<div class="container user-req-div shadow-sm">
+  <!--Conditional render the page h1 in future-->
+  <div class="row justify-content-between">
+    <h1>Users</h1>
+
+    <div class="col-8">
+      <input
+        id="filter-users"
+        type="text"
+        name="filter-users"
+        placeholder="Search Users"
+      />
     </div>
+    <div class="col-4 d-flex justify-content-end mb-3">
+      <button class="user-req-btn active">Users</button>
+      <button class="user-req-btn">Requests</button>
+    </div>
+    <hr />
+  </div>
+  <div class="row row-cols-md-3 g-2 mb-3">
+    <!--conditonally render cards, if no user accounts exist render a p tag-->
+    <% if(orbitUsers.length > 0){%> <% orbitUsers.forEach(user =>{%>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title user-list-fn"><%= user.first_name %></div>
+          <div class="card-subtitle mb-2 text-body-secondary">
+            @<%=user.username%>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%})}%>
+  </div>
 </div>

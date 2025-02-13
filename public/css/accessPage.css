@@ -12,13 +12,6 @@ body{
     justify-content: center;
 }
 
-.bg-img-logo{
-    position: absolute;
-    z-index: -1;
-    background-size: cover;
-    background-position: center;
-}
-
 .ls-title{
     font-size: 40px;
     font-weight: bold;

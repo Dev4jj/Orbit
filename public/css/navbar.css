@@ -1,8 +1,83 @@
 
+.navbar-logo{
+  width:15px;
+}
+
+.search-div{
+  max-width: 400px;
+  flex:1;
+  margin: 0 auto;
+}
+
+.search-bar{
+  width: 100%;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: rgba(211, 211, 211, 0.123);
+  border: 1px solid #ccc; 
+}
+
+.nav-icon{
+  width: 15px;
+  margin: 10px;
+}
+
+.nav-icon:hover{
+  cursor: pointer;
+}
+
+.pf-dropdown-btn{
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+/* page navigator imgs*/
+
+.page-nav-img{
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  font-weight: bold;
+  width: 40px;
+  border-radius: 5px;
+}
+
+.page-nav-img:hover{
+  background-color: rgba(211, 211, 211, 0.171);
+}
+
+
 .hiddenBar{
     display: none;
   }
   
 .visibleBar{
     display: block;
+  }
+  
+/* update account styling */
+
+.pf-update{
+  background-color:  rgba(211, 211, 211, 0.219);
+  padding: 5px;
+  border: none;
+  width: 100%;
+  }
+  
+  .update-btn{
+      background-color: white;
+      padding: 5px 40px;
+      display: block;
+      margin: auto;
+  }
+  
+  .update-btn:hover{
+      background-color: black;
+      color: white;
+      box-shadow: 7px 7px 5px lightgray;
+  }
+  
+  .dlt-modal-btn{
+      text-align: center;
   }

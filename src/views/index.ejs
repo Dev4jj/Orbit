@@ -6,12 +6,14 @@
     <title>Orbit</title>
     <link rel="icon" type="image/png" href="/images/satellite.png"/>
     <% if(access == 0){%>
-    <link rel="stylesheet" href="/css/index.css"/>
+    <link rel="stylesheet" href="/css/accessPage.css"/>
     <%}else if(access == 1){%>
       <link rel="stylesheet" href="/css/myAccount.css"/>
       <%}else if(access == 2){%>
         <link rel="stylesheet" href="/css/trending.css"/>
-        <%}%>
+        <%}else if(access == 3){%>
+          <link rel="stylesheet" href="/css/users.css"/>
+          <%}%>
     <link rel="stylesheet" href="/css/navbar.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
   </head>
@@ -23,7 +25,9 @@
 <%- include("myAccount.ejs")%>
 <%}else if(access == 2){%>
   <%- include("trending.ejs")%>
-<%}%>
+<%}else if(access == 3){%>
+  <%- include("users.ejs")%>
+  <%}%>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/main.js"></script>
 

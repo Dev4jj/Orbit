@@ -1,40 +1,4 @@
 
-.navbar-logo{
-    width:15px;
-}
-
-#trend-title{
-    font-size: 30px;
-}
-
-.nav-icon{
-    width: 15px;
-    margin: 10px;
-}
-
-.nav-icon:hover{
-    cursor: pointer;
-}
-
-.pf-dropdown-btn{
-    border: 1px solid #ccc;
-    border-radius: 10px;
-}
-
-.page-nav-img{
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 10px;
-    font-weight: bold;
-    width: 40px;
-    border-radius: 5px;
-}
-
-.page-nav-img:hover{
-    background-color: rgba(211, 211, 211, 0.171);
-}
-
 .trends-div{
     align-items: center;
 }

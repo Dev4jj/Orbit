@@ -4,81 +4,6 @@ body{
     overflow: auto;
 }
 
-.navbar-logo{
-    width:15px;
-}
-
-.search-div{
-    max-width: 400px;
-    flex:1;
-    margin: 0 auto;
-}
-
-.search-bar{
-    width: 100%;
-    border-radius: 20px;
-    padding: 10px;
-    background-color: rgba(211, 211, 211, 0.123);
-    border: 1px solid #ccc; 
-}
-
-.nav-icon{
-    width: 15px;
-    margin: 10px;
-}
-
-.nav-icon:hover{
-    cursor: pointer;
-}
-
-.pf-dropdown-btn{
-    border: 1px solid #ccc;
-    border-radius: 10px;
-}
-
-/* page navigator imgs*/
-
-.page-nav-img{
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 10px;
-    font-weight: bold;
-    width: 40px;
-    border-radius: 5px;
-}
-
-.page-nav-img:hover{
-    background-color: rgba(211, 211, 211, 0.171);
-}
-
-
-/* update account styling */
-
-.pf-update{
-    background-color:  rgba(211, 211, 211, 0.219);
-    padding: 5px;
-    border: none;
-    width: 100%;
-    }
-    
-    .update-btn{
-        background-color: white;
-        padding: 5px 40px;
-        display: block;
-        margin: auto;
-    }
-    
-    .update-btn:hover{
-        background-color: black;
-        color: white;
-        box-shadow: 7px 7px 5px lightgray;
-    }
-    
-    .dlt-modal-btn{
-        text-align: center;
-    }
-
 /* the feed */
 
 .the-feeds-container{
@@ -131,7 +56,7 @@ body{
 
 .msg{
     width: 100%;
-    border-radius: 20px;
+    border-radius: 10px;
     border: 1px solid #ccc;
     background-color: rgba(211, 211, 211, 0.123);
     padding: 5px 20px;
@@ -142,7 +67,7 @@ body{
     width: 100%;
     background-color: white;
     padding: 5px 20px;
-    border-radius: 20px;
+    border-radius: 10px;
 
 }
 
@@ -179,41 +104,6 @@ body{
     margin: 0;
 }
 
-
-/*Trending col*/
-.trends-friends{
-    overflow-y: scroll;
-    height: 90vh;
-    scrollbar-width: none;
-}
-
-.trends-friends-container{
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-}
-
-.tf-tittle{
-    font-size: 25px;
-}
-
-.trends-list, .friends-list{
-    padding: 0;
-    list-style: none;
-}
-
-.trends{
-    font-weight: bold;
-    font-size: 15px;
-}
-
-.trend-posts{
-    font-size: 13px;
-}
 
 /*orbit friends*/
 

@@ -179,9 +179,7 @@ function volumeConverter(vol){
 if(!vol){return 0}
 
 const volStr = vol.replace(/[^\dKMB+]/g, ''); //regular expressions outout: replaces anything not specified(not: numbers, or K,M,B+)
-
 const volValue = parseFloat(volStr.replace(/[^\d]/g, '')); //output: replaces anything not specified(not: numbers)
-
 
 if(volStr.includes("K")){
     return volValue * 1000;
@@ -191,7 +189,6 @@ if(volStr.includes("K")){
     return volValue;
 }
 }
-
 
 try{
 googleTrends.dailyTrends({
@@ -218,7 +215,7 @@ googleTrends.dailyTrends({
             return( volumeConverter(b.volume) - volumeConverter(a.volume))
         });
 console.log(sortedTrends);
-access=2
+access=2;
 res.render("index", {access, trends: sortedTrends});
     }catch(err){
         console.log(err);
@@ -230,6 +227,17 @@ res.render("index", {access, trends: sortedTrends});
 }catch(err){
     console.log(err);
 }
+})
+
+app.get("/users", (req, res)=>{
+    const {username} = req.session;
+
+    if(!username){
+        return res.status(401).redirect('/profile');
+    }
+
+    access=3;
+    res.render("index", {access });
 })
 
 
@@ -333,8 +341,8 @@ app.get("/logout", (req, res)=>{
             return res.status(500).send({ message: "Error during logout." });
         }
         res.clearCookie("connect.sid"); 
-        
-        res.redirect('/')  
+        access=0;
+        res.render('index', {access})  
     });
     console.log("user logged out");
 });

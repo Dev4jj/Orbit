@@ -22,7 +22,7 @@
           
     <a class="nav-link active mb-2" aria-current="page" href="/profile"><img src="/images/home.png" class="page-nav-img" alt="My home page"/></a>
     <a class="nav-link mb-2" href="/trending"><img src="/images/hashtag.png" class="page-nav-img" alt="Trends"/></a>
-    <a class="nav-link mb-2" href="#"><img src="/images/friends.png" class="page-nav-img" alt="Users"/></a>
+    <a class="nav-link mb-2" href="/users"><img src="/images/friends.png" class="page-nav-img" alt="Users"/></a>
     <a class="nav-link mb-2" href="#"><img src="/images/chat.png" class="page-nav-img" alt="Messages"/></a>
         
           <div class="dropdown-center pf-dropdown-btn ms-2">
@@ -56,3 +56,60 @@
       </div>
     </div>
   </nav>
+
+  <div class="container">
+    <div
+      class="modal fade"
+      id="accountModal"
+      tabindex="-1"
+      aria-hidden="true"
+      aria-labelledby="accountModalLabel"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content align-items-center">
+          <div class="modal-header">
+            <h1 class="modal-title" id="accountModalLabel">UPDATE ACCOUNT</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form action="update" method="POST">
+              <div class="mb-2">
+                <input
+                  type="text"
+                  placeholder="First Name..."
+                  class="pf-update"
+                  name="fnUpdate"
+                />
+              </div>
+              <div class="mb-2">
+                <textarea
+                  rows="5"
+                  cols="49"
+                  placeholder="Profile bio..."
+                  class="pf-update"
+                  name="bioUpdate"
+                ></textarea>
+              </div>
+              <hr />
+              <button type="submit" class="update-btn">UPDATE</button>
+            </form>
+            <hr />
+            <div class="dlt-modal-btn">
+              <button
+                type="button"
+                id="confirmDlt"
+                class="btn btn-danger mb-2"
+               
+              >
+                DELETE ACCOUNT
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

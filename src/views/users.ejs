@@ -1,0 +1,17 @@
+
+<%- include("navbar.ejs", {searchBar:false, searched: ''})%>
+
+<div class="container">
+<!--Conditional render the page h1 in future-->
+<h1>Users</h1>
+    <div class="row justify-content-between user-req-list mt-3">
+        <div class="col-8">
+        <input id="filter-users" type="text" name="filter-users" placeholder="Search Users"/>
+        </div>
+        <div class="col d-flex justify-content-end mb-3">
+        <button class="user-req-btn btn btn-outline-dark">Users</button>
+        <button class="user-req-btn btn btn-outline-dark">Requests</button>
+        </div>
+        <hr>
+    </div>
+</div>

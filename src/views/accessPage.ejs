@@ -1,47 +1,87 @@
 <div class="container full-height">
-    <div class="row align-items-center lspage-card">
-      <div class="col"><p>Welcome to <br>The <span class="ls-title">ORBIT.</span></p>
-        <p>The center of your social circle</p>
-      </div>
-      <!--conditionally render login and signup page-->
+  <div class="row align-items-center lspage-card">
+    <div class="col">
+      <p>Welcome to <br />The <span class="ls-title">ORBIT.</span></p>
+      <p>The center of your social circle</p>
+    </div>
+    <!--conditionally render login and signup page-->
 
-<div class="col-7 log-card">
-          <div class="card p-3 shadow-sm ">
-            <h2 class="card-title mb-4">Login</h2>
-            <form action="/login" method="post" id="loginForm">
-              <div class="mb-2">
-                <input type="text" placeholder="Username" name="username" class="ls-input" required/>
-              </div>
-              <div class="mb-3 pass-container">
-                <input type="password" placeholder="Password" name="password" class="ls-input" id="logpassword" required/>
-                <input type="checkbox" class="show-log"/>
-              </div>
-              <div><button type="submit" class="ls-btn" id="loginBtn">Login</button></div>
-            </form>
+    <div class="col-7 log-card">
+      <div class="card p-3 shadow-sm">
+        <h2 class="card-title mb-4">Login</h2>
+        <form action="/login" method="post" id="loginForm">
+          <div class="mb-2">
+            <input
+              type="text"
+              placeholder="Username"
+              name="username"
+              class="ls-input"
+              required
+            />
           </div>
-          <p>Don't have an Orbit account? <a href="#" class="toggle-signup">Sign Up</a></p>
-        </div>
-
-        
-
-      <div class="col-7 sign-card d-none">
-        <div class="card p-3 shadow-sm">
-          <h2 class="card-title mb-4">Signup</h2>
-          <form action="/signup" method="post" id="signForm">
-              <div class="mb-2">
-                  <input type="text" placeholder="First Name" name="fName" id="signfname" class="ls-input" required/>
-                </div>
-            <div class="mb-2">
-              <input type="text" placeholder="Username" name="username" class="ls-input" id="signusername" required/>
-            </div>
-            <div class="mb-3 pass-container">
-              <input type="password" placeholder="Password" name="password" class="ls-input" id="signpassword" required/>
-              <input type="checkbox" class="show-sign"/>
-            </div>
-            <div><button type="submit" class="ls-btn">Signup</button></div>
-          </form>
-        </div>
-        <p>Don't have an Orbit account? <a href="#" class="toggle-login">Login</a></p>
+          <div class="mb-3 pass-container">
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              class="ls-input"
+              id="logpassword"
+              required
+            />
+            <input type="checkbox" class="show-log" />
+          </div>
+          <div>
+            <button type="submit" class="ls-btn" id="loginBtn">Login</button>
+          </div>
+        </form>
       </div>
+      <p>
+        Don't have an Orbit account?
+        <a href="#" class="toggle-signup">Sign Up</a>
+      </p>
+    </div>
+
+    <div class="col-7 sign-card d-none">
+      <div class="card p-3 shadow-sm">
+        <h2 class="card-title mb-4">Signup</h2>
+        <form action="/signup" method="post" id="signForm">
+          <div class="mb-2">
+            <input
+              type="text"
+              placeholder="First Name"
+              name="fName"
+              id="signfname"
+              class="ls-input"
+              required
+            />
+          </div>
+          <div class="mb-2">
+            <input
+              type="text"
+              placeholder="Username"
+              name="username"
+              class="ls-input"
+              id="signusername"
+              required
+            />
+          </div>
+          <div class="mb-3 pass-container">
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              class="ls-input"
+              id="signpassword"
+              required
+            />
+            <input type="checkbox" class="show-sign" />
+          </div>
+          <div><button type="submit" class="ls-btn">Signup</button></div>
+        </form>
+      </div>
+      <p>
+        Don't have an Orbit account? <a href="#" class="toggle-login">Login</a>
+      </p>
     </div>
   </div>
+</div>

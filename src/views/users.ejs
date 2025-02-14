@@ -23,12 +23,19 @@
     <!--conditonally render cards, if no user accounts exist render a p tag-->
     <% if(orbitUsers.length > 0){%> <% orbitUsers.forEach(user =>{%>
     <div class="col">
-      <div class="card">
+      <div class="card frnd-card">
+        <div class="row">
+            <div class="col-md-8">
         <div class="card-body">
           <div class="card-title user-list-fn"><%= user.first_name %></div>
           <div class="card-subtitle mb-2 text-body-secondary">
             @<%=user.username%>
           </div>
+        </div>
+        </div>
+        <div class="col-md-4">
+            <button class="add-btn">Add Friend</button>
+        </div>
         </div>
       </div>
     </div>

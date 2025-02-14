@@ -15,16 +15,37 @@
 .user-req-btn{
     width: 100px;
     padding: 10px;
-    border: none;
-    background-color: white;
     border-radius: 5px;
+    border: 1px solid black;
+    background-color: white;
 }
 
 .user-req-btn:hover, .user-req-btn.active{
+    /*background-color: black;
+    color: white;*/
+    
     background-color: black;
     color: white;
+    box-shadow: 7px 7px 5px lightgray;
+}
+
+.frnd-card:hover{
+    box-shadow: 7px 7px 5px lightgray;
 }
 
 .user-list-fn{
     font-size: 20px;
+}
+
+.add-btn{
+width: 100%;
+border: 1px solid black;
+border-radius: 5px;
+padding: 5px;
+background-color: white;
+}
+
+.add-btn:hover{
+    color: white;
+    background-color: black;
 }

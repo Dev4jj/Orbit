@@ -65,6 +65,25 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
+        //users page user list - requests toggle
+
+        if(e.target.matches('#user-btn')){
+
+            document.querySelector('#user-btn').classList.add('active');
+            document.querySelector('#req-btn').classList.remove('active');
+            
+            document.querySelector(".req-list").classList.add('d-none');
+            document.querySelector(".user-list").classList.remove("d-none");
+
+        }else if(e.target.matches('#req-btn')){
+
+            document.querySelector('#req-btn').classList.add('active');
+            document.querySelector('#user-btn').classList.remove('active');
+
+            document.querySelector(".user-list").classList.add('d-none');
+            document.querySelector(".req-list").classList.remove("d-none");
+        }
+
     });
 
     //basic form validation checks

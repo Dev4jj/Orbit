@@ -4,6 +4,10 @@
     border-radius: 10px;
 }
 
+#user-pg-title{
+ font-size: 30px;
+}
+
 #filter-users{
     width: 100%;
     padding: 10px;
@@ -21,9 +25,6 @@
 }
 
 .user-req-btn:hover, .user-req-btn.active{
-    /*background-color: black;
-    color: white;*/
-    
     background-color: black;
     color: white;
     box-shadow: 7px 7px 5px lightgray;
@@ -35,6 +36,7 @@
 
 .user-list-fn{
     font-size: 20px;
+    font-weight: bold;
 }
 
 .add-btn{

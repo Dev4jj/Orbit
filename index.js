@@ -8,9 +8,14 @@ import pg from "pg";
 import connectPgSimple from "connect-pg-simple";
 import googleTrends from "google-trends-api";
 import he from "he";
+import { createServer } from "http";
+import { Server } from 'socket.io';
 
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer);
+
 const pgSession = connectPgSimple(session);
 dotenv.config();
 const port = process.env.PORT || 8000;
@@ -54,6 +59,10 @@ let access = 0; // check databse if user info matches then set access to true or
 
 app.get('/', (req, res)=>{
     res.render("index", {access});
+})
+
+io.on("connection", (socket)=>{
+    console.log("User is connected");
 })
 
 // check if user already exists in future database
@@ -103,7 +112,7 @@ app.post('/login', async(req, res)=>{
 
 req.session.username= user.username;
 
-    console.log('User is logged in', user.username);
+    console.log('User is logged in:', user.username);
     return res.redirect("/profile");
     
     }catch(err){
@@ -383,6 +392,6 @@ if(confirmed){
 }
 });
 
-app.listen(port, ()=>{
+httpServer.listen(port, ()=>{
     console.log(`Server is running on port ${port}`);
 });

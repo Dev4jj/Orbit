@@ -35,7 +35,9 @@
         </div>
         </div>
         <div class="col-md-5">
-            <button class="add-btn">Add Friend</button>
+            <form action="/sent_friend_req" method="post">
+            <button class="add-btn" value="<%=user.id%>">Add Friend</button>
+            </form>
         </div>
         </div>
       </div>

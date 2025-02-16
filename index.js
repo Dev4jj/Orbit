@@ -238,6 +238,8 @@ res.render("index", {access, trends: sortedTrends});
 }
 })
 
+//users list page
+
 app.get("/users", async(req, res)=>{
     const {username} = req.session;
 
@@ -256,6 +258,21 @@ app.get("/users", async(req, res)=>{
     }
 })
 
+app.post("/sent_friend_req", async(req, res)=>{
+const {username} = req.session;
+
+if(!username){
+    return res.status(401).redirect("/profile");
+}
+
+    try{
+
+    console.log("succefully sent");
+    access=3;
+    res.redirect("/users");
+    }catch(err){;
+    }
+})
 
 //user makes a post
 

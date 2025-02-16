@@ -260,6 +260,7 @@ app.get("/users", async(req, res)=>{
 
 app.post("/sent_friend_req", async(req, res)=>{
 const {username} = req.session;
+const recipientId = req.body.recipient_id;
 
 if(!username){
     return res.status(401).redirect("/profile");
@@ -267,7 +268,7 @@ if(!username){
 
     try{
 
-    console.log("succefully sent");
+    console.log(`succefully sent request to: ${recipientId}`);
     access=3;
     res.redirect("/users");
     }catch(err){;

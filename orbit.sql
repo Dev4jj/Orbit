@@ -31,6 +31,13 @@ CREATE TABLE IF NOT EXISTS comments(
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS friend_requests(
+  id SERIAL PRIMARY KEY,
+  sender_id INT REFERENCES users(id) ON DELETE CASCADE,
+  recipient_id INT REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS session (
   sid VARCHAR PRIMARY KEY,     
   sess JSONB,                      

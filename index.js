@@ -110,7 +110,8 @@ app.post('/login', async(req, res)=>{
            return res.redirect("/");
         }
 
-req.session.username= user.username;
+req.session.username= user.username
+req.session.myid= user.id
 
     console.log('User is logged in:', user.username);
     return res.redirect("/profile");
@@ -260,6 +261,7 @@ app.get("/users", async(req, res)=>{
 
 app.post("/sent_friend_req", async(req, res)=>{
 const {username} = req.session;
+const {myid} = req.session;
 const recipientId = req.body.recipient_id;
 
 if(!username){
@@ -267,6 +269,7 @@ if(!username){
 }
 
     try{
+    await db.query(`INSERT INTO friend_requests (sender_id, recipient_id) VALUES ($1, $2)`, [myid, recipientId]);
 
     console.log(`succefully sent request to: ${recipientId}`);
     access=3;

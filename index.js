@@ -209,8 +209,8 @@ googleTrends.dailyTrends({
         console.log(err);
     }else{
         try{
-            
             const parsedResults = JSON.parse(results);
+            console.log(parsedResults);
         const trendsArray = parsedResults.default.trendingSearchesDays.map((day) => {
                 return day.trendingSearches.map(trend => {
                     return{
@@ -242,9 +242,9 @@ res.render("index", {access, trends: sortedTrends});
 //users list page
 
 app.get("/users", async(req, res)=>{
-    const {username} = req.session;
+    const {username, myid} = req.session;
 
-    if(!username){
+    if(!username || !myid){
         return res.status(401).redirect('/profile');
     }
     
@@ -252,10 +252,22 @@ app.get("/users", async(req, res)=>{
     const usersNotYou = await db.query(`SELECT * FROM users WHERE username != $1`, [username])
     const orbitUsers = usersNotYou.rows;
 
+    const sentRequest = await db.query(`
+        SELECT fr.id, fr.sender_id, fr.recipient_id, users.first_name AS sender_fn, users.username AS sender_un
+        FROM friend_requests fr
+        INNER JOIN users ON fr.sender_id = users.id
+        WHERE fr.recipient_id = $1
+    `, [myid]);
+    
+
+    const receivedRequests =  sentRequest.rows;
+    console.log(receivedRequests);
+
     access=3;
-    res.render("index", {access, orbitUsers });
+    res.render("index", {access, orbitUsers, receivedRequests });
     }catch(err){
     console.error("Error occurred while fetching user data or posts:", err);
+    res.status(500).send(`An error occured: ${err.message}`)
     }
 })
 

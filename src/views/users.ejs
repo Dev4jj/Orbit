@@ -26,25 +26,45 @@
     <div class="col">
       <div class="card frnd-card text-bg-light h-100">
         <div class="row">
-            <div class="col-md-7">
-        <div class="card-body">
-          <div class="card-title user-list-fn"><%= user.first_name %></div>
-          <div class="card-subtitle mb-2 text-body-secondary">
-            @<%=user.username%>
+          <div class="col-md-7">
+            <div class="card-body">
+              <div class="card-title user-list-fn"><%= user.first_name %></div>
+              <div class="card-subtitle mb-2 text-body-secondary">
+                @<%=user.username%>
+              </div>
+            </div>
           </div>
-        </div>
-        </div>
-        <div class="col-md-5">
+          <div class="col-md-5">
             <form action="/sent_friend_req" method="post">
-            <button class="add-btn" value="<%=user.id%>" name="recipient_id">Add Friend</button>
+              <button class="add-btn" value="<%=user.id%>" name="recipient_id">
+                Add Friend
+              </button>
             </form>
-        </div>
+          </div>
         </div>
       </div>
     </div>
     <%})}%>
   </div>
 
-<div class="req-list d-none">This is the future request list</div>
-
+  <div class="req-list d-none row row-cols-2 mb-3">
+    <% if(receivedRequests.length > 0) {%> <% receivedRequests.forEach(request=>{%>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body row">
+          <div class="col-7">
+          <%=request.sender_fn%> (@<%=request.sender_un%>) wants to join your
+          orbit
+          </div>
+          <div class="col-5">
+          <button class="btn btn-outline-dark">Accept</button>
+          <button class="btn btn-outline-danger">decline</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%})}else{%> 
+    No pending requests
+    <%}%>
+  </div>
 </div>

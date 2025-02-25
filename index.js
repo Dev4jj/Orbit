@@ -6,7 +6,8 @@ import dotenv from "dotenv";
 import bcrypt from 'bcryptjs';
 import pg from "pg";
 import connectPgSimple from "connect-pg-simple";
-import googleTrends from "google-trends-api";
+import googleTrends from "google-trends-api"; 
+//try to resolve issue with google-trends-api or find alternative, therefore trending page is currently unusable
 import he from "he";
 import { createServer } from "http";
 import { Server } from 'socket.io';

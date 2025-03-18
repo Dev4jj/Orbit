@@ -8,6 +8,7 @@ import pg from "pg";
 import connectPgSimple from "connect-pg-simple";
 import { createServer } from "http";
 import { Server } from 'socket.io';
+import axios from 'axios';
 
 
 const app = express();
@@ -51,6 +52,8 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24,
     }
 }));
+
+const newsDataUrl = `https://newsdata.io/api/1/latest?apikey=${process.env.NEWS_KEY}`; //api url for trending page
 
 let access = 0; // check databse if user info matches then set access to true or false
 
@@ -183,10 +186,14 @@ if(!username){
 }
 
 try{
+
+const response = await axios.get(newsDataUrl + `&language=en&country=ca&removeduplicate=1&size=10`);
+const allArticles = response.data.results;
+console.log(allArticles);
     access=2;
-    res.render("index", {access})
+    res.render("index", {access});
 }catch(err){
-    console.log(err)
+    console.log(err);
 }
 
 })

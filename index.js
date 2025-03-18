@@ -6,7 +6,6 @@ import dotenv from "dotenv";
 import bcrypt from 'bcryptjs';
 import pg from "pg";
 import connectPgSimple from "connect-pg-simple";
-import he from "he";
 import { createServer } from "http";
 import { Server } from 'socket.io';
 

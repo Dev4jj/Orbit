@@ -6,8 +6,6 @@ import dotenv from "dotenv";
 import bcrypt from 'bcryptjs';
 import pg from "pg";
 import connectPgSimple from "connect-pg-simple";
-import googleTrends from "google-trends-api"; 
-//try to resolve issue with google-trends-api or find alternative, therefore trending page is currently unusable
 import he from "he";
 import { createServer } from "http";
 import { Server } from 'socket.io';
@@ -24,7 +22,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 //connect to db
-
 const db = new pg.Client({
 user: process.env.USER,
 host: process.env.HOST,
@@ -186,58 +183,13 @@ if(!username){
     return res.status(401).redirect('/profile');
 }
 
-function volumeConverter(vol){
-if(!vol){return 0}
-
-const volStr = vol.replace(/[^\dKMB+]/g, ''); //regular expressions outout: replaces anything not specified(not: numbers, or K,M,B+)
-const volValue = parseFloat(volStr.replace(/[^\d]/g, '')); //output: replaces anything not specified(not: numbers)
-
-if(volStr.includes("K")){
-    return volValue * 1000;
-}else if(volStr.includes("M")){
-    return volValue * 1000000;
-}else{
-    return volValue;
-}
-}
-
 try{
-googleTrends.dailyTrends({
-    geo:'US',
-}, function(err, results){
-    
-    if(err){
-        console.log(err);
-    }else{
-        try{
-            const parsedResults = JSON.parse(results);
-            console.log(parsedResults);
-        const trendsArray = parsedResults.default.trendingSearchesDays.map((day) => {
-                return day.trendingSearches.map(trend => {
-                    return{
-                        topic: trend.title.query,
-                        volume: trend.formattedTraffic,
-                        snippet: he.decode(trend.articles[0]?.snippet)
-                    }
-                });
-        }) 
-        const flatArray = trendsArray.flat().slice(0,20);
-        const sortedTrends = flatArray.sort((a,b)=>{
-            return( volumeConverter(b.volume) - volumeConverter(a.volume))
-        });
-console.log(sortedTrends);
-access=2;
-res.render("index", {access, trends: sortedTrends});
-    }catch(err){
-        console.log(err);
-    }
-    }
-});
-
-
+    access=2;
+    res.render("index", {access})
 }catch(err){
-    console.log(err);
+    console.log(err)
 }
+
 })
 
 //users list page

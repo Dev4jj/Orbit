@@ -189,9 +189,9 @@ try{
 
 const response = await axios.get(newsDataUrl + `&language=en&country=ca&removeduplicate=1&size=10`);
 const allArticles = response.data.results;
-console.log(allArticles);
+
     access=2;
-    res.render("index", {access});
+    res.render("index", {access, allArticles});
 }catch(err){
     console.log(err);
 }

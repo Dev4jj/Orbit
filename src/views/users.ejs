@@ -48,23 +48,33 @@
   </div>
 
   <div class="req-list d-none row row-cols-2 mb-3">
-    <% if(receivedRequests.length > 0) {%> <% receivedRequests.forEach(request=>{%>
+    <% if(receivedRequests.length > 0) {%> <%
+    receivedRequests.forEach(request=>{%>
     <div class="col">
       <div class="card h-100">
         <div class="card-body row">
           <div class="col-7">
-          <%=request.sender_fn%> (@<%=request.sender_un%>) wants to join your
-          orbit
+            <%=request.sender_fn%> (@<%=request.sender_un%>) wants to join your
+            orbit
           </div>
           <div class="col-5">
-          <button class="btn btn-outline-dark">Accept</button>
-          <button class="btn btn-outline-danger">decline</button>
+            <form action="/accept_deny_req" method="post">
+              <button class="btn btn-outline-dark" value="1" name="accept_deny">
+                Accept
+              </button>
+              <button
+                class="btn btn-outline-danger"
+                value="2"
+                name="accept_deny"
+              >
+                decline
+              </button>
+              <input type="hidden" name="sender_id" value="<%=request.sender_id%>"/>
+            </form>
           </div>
         </div>
       </div>
     </div>
-    <%})}else{%> 
-    No pending requests
-    <%}%>
+    <%})}else{%> No pending requests <%}%>
   </div>
 </div>

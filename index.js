@@ -193,7 +193,8 @@ const allArticles = response.data.results;
     access=2;
     res.render("index", {access, allArticles});
 }catch(err){
-    console.log(err);
+    console.error("Error occured while fetching trending data:",err);
+    res.status(500).json({message: "Server error"});
 }
 
 })
@@ -226,7 +227,7 @@ app.get("/users", async(req, res)=>{
     res.render("index", {access, orbitUsers, receivedRequests });
     }catch(err){
     console.error("Error occurred while fetching user data or posts:", err);
-    res.status(500).send(`An error occured: ${err.message}`)
+    res.status(500).send(`An error occured: ${err.message}`);
     }
 })
 
@@ -245,7 +246,29 @@ if(!username){
     console.log(`succefully sent request to recipent_id:${recipientId}`);
 
     res.redirect("/users");
-    }catch(err){;
+    }catch(err){
+        console.error("Error occured while sending friend request:", err);
+        res.status(500).send(`An error occured: ${err.message}`);
+    }
+});
+
+app.post("/accept_deny_req", async(req, res)=>{
+    const {username} = req.session;
+    const{accept_deny, sender_id} = req.body;
+    const {myid} = req.session;
+    
+    if(!username){
+        return res.status(401).redirect("/profile");
+    }else if(!accept_deny || sender_id){
+        console.error("missing request parameters:", err);
+        return res.status(400).redirect("/profile");
+    }
+
+    try{
+        console.log("You have a new friend");
+        res.redirect("/users");
+    }catch(err){
+console.error("Error occured while responding to friend request:", err)
     }
 })
 
@@ -275,7 +298,7 @@ app.post("/post", async(req, res)=>{
     res.redirect("/profile");
     
     }catch(err){
-        console.log(err);
+        console.error("Error occured while making a post",err);
     }
 })
 

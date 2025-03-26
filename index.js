@@ -259,13 +259,20 @@ app.post("/accept_deny_req", async(req, res)=>{
     
     if(!username){
         return res.status(401).redirect("/profile");
-    }else if(!accept_deny || sender_id){
-        console.error("missing request parameters:", err);
+    }else if(!accept_deny || !sender_id){
+        console.log("missing request parameters");
         return res.status(400).redirect("/profile");
     }
 
     try{
-        console.log("You have a new friend");
+if(accept_deny == '1'){
+    console.log("You accepted the friend request");
+}else if(accept_deny == '2'){
+    console.log("You denied the friend request");
+}else{
+    console.err("Invalid request:", err);
+    return res.status(400).redirect("/profile");
+}
         res.redirect("/users");
     }catch(err){
 console.error("Error occured while responding to friend request:", err)

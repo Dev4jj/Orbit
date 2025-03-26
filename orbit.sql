@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS friend_requests(
   id SERIAL PRIMARY KEY,
   sender_id INT REFERENCES users(id) ON DELETE CASCADE,
   recipient_id INT REFERENCES users(id) ON DELETE CASCADE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(sender_id, recipient_id)
 );
 
 CREATE TABLE IF NOT EXISTS session (

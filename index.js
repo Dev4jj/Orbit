@@ -242,8 +242,8 @@ if(!username){
     try{
     await db.query(`INSERT INTO friend_requests (sender_id, recipient_id) VALUES ($1, $2)`, [myid, recipientId]);
 
-    console.log(`succefully sent request to: ${recipientId}`);
-    access=3;
+    console.log(`succefully sent request to recipent_id:${recipientId}`);
+
     res.redirect("/users");
     }catch(err){;
     }

@@ -176,108 +176,6 @@ if (!user) {
     return res.status(500).json({ message: "Server error" });
 }});
 
-//trending page
-
-app.get("/trending", async(req, res)=>{
-const {username} = req.session;
-
-if(!username){
-    return res.status(401).redirect('/profile');
-}
-
-try{
-
-const response = await axios.get(newsDataUrl + `&language=en&country=ca&removeduplicate=1&size=10`);
-const allArticles = response.data.results;
-
-    access=2;
-    res.render("index", {access, allArticles});
-}catch(err){
-    console.error("Error occured while fetching trending data:",err);
-    res.status(500).json({message: "Server error"});
-}
-
-})
-
-//users list page
-
-app.get("/users", async(req, res)=>{
-    const {username, myid} = req.session;
-
-    if(!username || !myid){
-        return res.status(401).redirect('/profile');
-    }
-    
-    try{
-    const usersNotYou = await db.query(`SELECT * FROM users WHERE username != $1`, [username])
-    const orbitUsers = usersNotYou.rows;
-
-    const sentRequest = await db.query(`
-        SELECT fr.id, fr.sender_id, fr.recipient_id, users.first_name AS sender_fn, users.username AS sender_un
-        FROM friend_requests fr
-        INNER JOIN users ON fr.sender_id = users.id
-        WHERE fr.recipient_id = $1
-    `, [myid]);
-    
-
-    const receivedRequests =  sentRequest.rows;
-    console.log(receivedRequests);
-
-    access=3;
-    res.render("index", {access, orbitUsers, receivedRequests });
-    }catch(err){
-    console.error("Error occurred while fetching user data or posts:", err);
-    res.status(500).send(`An error occured: ${err.message}`);
-    }
-})
-
-app.post("/sent_friend_req", async(req, res)=>{
-const {username} = req.session;
-const {myid} = req.session;
-const recipientId = req.body.recipient_id;
-
-if(!username){
-    return res.status(401).redirect("/profile");
-}
-
-    try{
-    await db.query(`INSERT INTO friend_requests (sender_id, recipient_id) VALUES ($1, $2)`, [myid, recipientId]);
-
-    console.log(`succefully sent request to recipent_id:${recipientId}`);
-
-    res.redirect("/users");
-    }catch(err){
-        console.error("Error occured while sending friend request:", err);
-        res.status(500).send(`An error occured: ${err.message}`);
-    }
-});
-
-app.post("/accept_deny_req", async(req, res)=>{
-    const {username} = req.session;
-    const{accept_deny, sender_id} = req.body;
-    const {myid} = req.session;
-    
-    if(!username){
-        return res.status(401).redirect("/profile");
-    }else if(!accept_deny || !sender_id){
-        console.log("missing request parameters");
-        return res.status(400).redirect("/profile");
-    }
-
-    try{
-if(accept_deny == '1'){
-    console.log("You accepted the friend request");
-}else if(accept_deny == '2'){
-    console.log("You denied the friend request");
-}else{
-    console.err("Invalid request:", err);
-    return res.status(400).redirect("/profile");
-}
-        res.redirect("/users");
-    }catch(err){
-console.error("Error occured while responding to friend request:", err)
-    }
-})
 
 //user makes a post
 
@@ -331,6 +229,110 @@ app.post("/post/comment", async(req, res)=>{
         res.redirect("/profile");
     }catch(err){
         console.log(err);
+    }
+})
+
+//trending page
+
+app.get("/trending", async(req, res)=>{
+const {username} = req.session;
+
+if(!username){
+    return res.status(401).redirect('/profile');
+}
+
+try{
+
+const response = await axios.get(newsDataUrl + `&language=en&country=ca&removeduplicate=1&size=10`);
+const allArticles = response.data.results;
+
+    access=2;
+    res.render("index", {access, allArticles});
+}catch(err){
+    console.error("Error occured while fetching trending data:",err);
+    res.status(500).json({message: "Server error"});
+}
+
+})
+
+//users list page
+
+app.get("/users", async(req, res)=>{
+    const {username, myid} = req.session;
+
+    if(!username || !myid){
+        return res.status(401).redirect('/profile');
+    }
+    
+    try{
+    const usersNotYou = await db.query(`SELECT * FROM users WHERE username != $1`, [username])
+    const orbitUsers = usersNotYou.rows;
+
+    const sentRequest = await db.query(`
+        SELECT fr.id, fr.sender_id, fr.recipient_id, users.first_name AS sender_fn, users.username AS sender_un
+        FROM friend_requests fr
+        INNER JOIN users ON fr.sender_id = users.id
+        WHERE fr.recipient_id = $1
+    `, [myid]);
+    const receivedRequests =  sentRequest.rows;
+    console.log(receivedRequests);
+
+    access=3;
+    res.render("index", {access, orbitUsers, receivedRequests });
+    }catch(err){
+    console.error("Error occurred while fetching user data or posts:", err);
+    res.status(500).send(`An error occured: ${err.message}`);
+    }
+})
+
+app.post("/sent_friend_req", async(req, res)=>{
+const {username} = req.session;
+const {myid} = req.session;
+const recipientId = req.body.recipient_id;
+
+if(!username){
+    return res.status(401).redirect("/profile");
+}
+
+    try{
+    await db.query(`INSERT INTO friend_requests (sender_id, recipient_id) VALUES ($1, $2)`, [myid, recipientId]);
+
+    console.log(`succefully sent request to recipent_id:${recipientId}`);
+
+    res.redirect("/users");
+    }catch(err){
+        console.error("Error occured while sending friend request:", err);
+        res.status(500).send(`An error occured: ${err.message}`);
+    }
+});
+
+app.post("/accept_deny_req", async(req, res)=>{
+    const {username} = req.session;
+    const{accept_deny, sender_id} = req.body;
+    const {myid} = req.session;
+    
+    if(!username){
+        return res.status(401).redirect("/profile");
+    }else if(!accept_deny || !sender_id){
+        console.log("missing request parameters");
+        return res.status(400).redirect("/profile");
+    }
+
+    try{
+if(accept_deny == '1'){
+    await db.query(`INSERT INTO friends (user1_id, user2_id) VALUES ($1, $2), ($2, $1)`, [myid, sender_id]);
+    await db.query(`DELETE FROM friend_requests WHERE sender_id = $1 AND recipient_id = $2`, [sender_id, myid]);
+    console.log("You accepted the friend request");
+}else if(accept_deny == '2'){
+    await db.query(`DELETE FROM friend_requests WHERE sender_id = $1 AND recipient_id = $2`, [sender_id, myid]);
+    console.log("You declined the friend request");
+}else{
+    console.err("Invalid request:", err);
+    return res.status(400).redirect("/profile");
+}
+        res.redirect("/users");
+    }catch(err){
+console.error("Error occured while responding to friend request:", err)
     }
 })
 

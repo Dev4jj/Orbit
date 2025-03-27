@@ -44,3 +44,11 @@ CREATE TABLE IF NOT EXISTS session (
   sess JSONB,                      
   expire TIMESTAMP WITH TIME ZONE NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS friends(
+  id SERIAL PRIMARY KEY,
+  user1_id INT REFERENCES users(id) ON DELETE CASCADE,
+  user2_id INT REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(user1_id, user2_id)
+);

@@ -13,7 +13,9 @@
         <link rel="stylesheet" href="/css/trending.css"/>
         <%}else if(access == 3){%>
           <link rel="stylesheet" href="/css/users.css"/>
-          <%}%>
+          <%}else if(access == 4){%>
+            <link rel="stylesheet" href="/css/messages.css"/>
+            <%}%>
     <link rel="stylesheet" href="/css/navbar.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
   </head>
@@ -27,7 +29,9 @@
   <%- include("trending.ejs")%>
 <%}else if(access == 3){%>
   <%- include("users.ejs")%>
-  <%}%>
+  <%}else if(access == 4){%>
+    <%- include("messages.ejs")%>
+    <%}%>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/main.js"></script>
 

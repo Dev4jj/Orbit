@@ -354,6 +354,24 @@ console.error("Error occured while responding to friend request:", err)
     }
 })
 
+//user messages
+app.get("/messages", async(req, res)=>{
+    const {username} = req.session;
+
+if(!username){
+    return res.status(401).redirect('/profile');
+}
+
+try{
+
+    access=4;
+    res.render("index", {access});
+}catch(err){
+    console.error("Error occured opening messages page:",err);
+    res.status(500).json({message: "Server error"});
+}
+})
+
 //user updates profile
 
 app.post("/update", async(req, res)=>{

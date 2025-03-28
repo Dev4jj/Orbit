@@ -275,10 +275,28 @@ app.get("/users", async(req, res)=>{
         WHERE fr.recipient_id = $1
     `, [myid]);
     const receivedRequests =  sentRequest.rows;
-    console.log(receivedRequests);
+    
+    const friendships = await db.query(`
+        SELECT user1_id, user2_id FROM friends
+        WHERE user1_id = $1 OR user2_id = $1
+        `, [myid]);
+
+    console.log(friendships.rows);
+    const friendIds = new Set();
+
+    friendships.rows.forEach(friend => {
+if(friend.user1_id == myid){
+    friendIds.add(friend.user2_id);
+}else{
+    friendIds.add(friend.user1_id)
+}
+    });
+
+    const orbitUsersFiltered = orbitUsers.filter(user => !friendIds.has(user.id));
+console.log(orbitUsersFiltered);
 
     access=3;
-    res.render("index", {access, orbitUsers, receivedRequests });
+    res.render("index", {access, orbitUsersFiltered, receivedRequests });
     }catch(err){
     console.error("Error occurred while fetching user data or posts:", err);
     res.status(500).send(`An error occured: ${err.message}`);

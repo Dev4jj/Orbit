@@ -1,8 +1,25 @@
+.msg-list-container{
+    background-color: white;
+    height: 88vh;
+    border-radius: 10px;
+border: 1px solid #ccc; 
+
+}
+
+.search-user-msg{
+    background-color: rgba(211, 211, 211, 0.123);
+border-radius: 5px;
+margin: 10px 0px;
+border: 1px solid #ccc; 
+padding: 5px;
+}
+
 .msg-container{
     background-color: white;
     border-radius: 10px;
     padding: 10px;
     border: 1px solid #ccc; 
+    height: 88vh;
 }
 
 .text-msg{

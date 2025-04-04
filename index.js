@@ -364,8 +364,18 @@ if(!username){
 
 try{
 
+   const friendResults =  await db.query(`
+       SELECT users.first_name, users.username, users.id
+       FROM friends fr
+       JOIN users ON fr.user2_id = users.id
+       WHERE fr.user1_id = 1;
+         `);
+    
+    const friendsList = friendResults.rows
+    console.log(friendsList);
+
     access=4;
-    res.render("index", {access});
+    res.render("index", {access, friendsList});
 }catch(err){
     console.error("Error occured opening messages page:",err);
     res.status(500).json({message: "Server error"});

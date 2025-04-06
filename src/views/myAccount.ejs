@@ -32,7 +32,7 @@
 
         <div class="my-msg mb-3 shadow-sm">
           <form action="/post" method="post" id="postForm" class="row">
-            <div class="col-12 col-md-10 mt-2">
+            <div class="col-12 col-sm-9 mt-2">
               <input
                 placeholder="What's on your mind?"
                 class="msg"
@@ -42,8 +42,13 @@
                 autocomplete="off"
                 required
               />
+              <div class="friend-post-check">
+                <!--Creeate a checkbox that allows users to limit the post visibility to only those who are their firends-->
+                  <input type="checkbox" id="isFriend"/>
+                  <span>Make this posts only visible to friends</span>
+                </div>
             </div>
-            <div class="col-12 col-md-2 mt-2">
+            <div class="col-12 col-sm-3 mt-2">
               <button type="submit" class="post-btn" id="postBtn">POST</button>
             </div>
           </form>

@@ -85,7 +85,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
     });
-
     //basic form validation checks
 
     document.getElementById("signForm").addEventListener("submit", function(e){
@@ -107,6 +106,36 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     );
 
+    
+//post form handling
+document.getElementById('postForm').addEventListener('submit', function (e){
+if(e.target.matches('#postBtn')){
+    e.preventDefault();
+const postContent = document.getElementById('myMsg').value;
+const isFriend = document.getElementById('isFriend').checked;
+
+const postInfo = {
+    content: postContent,
+ isFriend: isFriend,
+};
+
+fetch('/posts', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(postInfo),
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Post created successfully:', data);
+})
+.catch(error => {
+    console.error('Error creating post:', error);
+});
+}})
+
+
     //users page btns 
     //fix functionality
     const userReqBtns = document.querySelectorAll('.user-req-btn');
@@ -119,4 +148,21 @@ document.addEventListener("DOMContentLoaded", function() {
             button.classList.add('active');
         });
     });
+
+    /*
+    document.getElementById("search-input").addEventListener("input", function() {
+        let filter = this.value.toLowerCase(); // Get the value of the input and convert it to lowercase
+        let friends = document.querySelectorAll("#friendsList .user-msg-list"); // Get all the friend list items
+    
+        friends.forEach(function(friend) {
+            let friendName = friend.querySelector(".friend-name").textContent.toLowerCase(); // Get the friend's name and username
+            if (friendName.indexOf(filter) > -1) {
+                friend.style.display = ""; // Show the friend if the name matches the filter
+            } else {
+                friend.style.display = "none"; // Hide the friend if the name doesn't match the filter
+            }
+        });
+    });*/
+
+
 });

@@ -181,7 +181,8 @@ if (!user) {
 
 app.post("/post", async(req, res)=>{ 
     const {username} = req.session;
-    const {content} = req.body;
+    const {content, isFriend} = req.body;
+    console.log(isFriend);
 
     if(!username){
         return res.status(401).redirect('/profile');
@@ -356,7 +357,7 @@ console.error("Error occured while responding to friend request:", err)
 
 //user messages
 app.get("/messages", async(req, res)=>{
-    const {username} = req.session;
+    const {username, myid} = req.session;
 
 if(!username){
     return res.status(401).redirect('/profile');
@@ -368,8 +369,8 @@ try{
        SELECT users.first_name, users.username, users.id
        FROM friends fr
        JOIN users ON fr.user2_id = users.id
-       WHERE fr.user1_id = 1;
-         `);
+       WHERE fr.user1_id = $1;
+         `, [myid]);
     
     const friendsList = friendResults.rows
     console.log(friendsList);

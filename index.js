@@ -148,7 +148,7 @@ if (!user) {
 
         
        const postRes = await db.query(`
-            SELECT users.first_name, users.username, users.id AS user_id, posts.id AS post_id, posts.content,post.friends_only, posts.created_at
+            SELECT users.first_name, users.username, users.id AS user_id, posts.id AS post_id, posts.content, posts.friends_only, posts.created_at
             FROM posts
             JOIN users ON posts.user_id = users.id
             WHERE posts.content ILIKE $1

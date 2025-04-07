@@ -68,6 +68,15 @@ body{
     box-shadow: none;
 }
 
+.post-option-txt{
+    font-size: 14px;
+    color: gray;
+}
+
+.post-option-txt:hover, #isFriend:hover{
+    cursor: pointer;
+}
+
 .post-username{
     font-size: 15px;
 }

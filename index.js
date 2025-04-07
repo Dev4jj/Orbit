@@ -148,7 +148,7 @@ if (!user) {
 
         
        const postRes = await db.query(`
-            SELECT users.first_name, users.username, users.id AS user_id, posts.id AS post_id, posts.content, posts.created_at
+            SELECT users.first_name, users.username, users.id AS user_id, posts.id AS post_id, posts.content,post.friends_only, posts.created_at
             FROM posts
             JOIN users ON posts.user_id = users.id
             WHERE posts.content ILIKE $1
@@ -197,7 +197,7 @@ app.post("/post", async(req, res)=>{
     }
 
     //Logic for a post
-    await db.query(`INSERT INTO posts (user_id, content) VALUES ($1, $2)`, [user.id, content]);
+    await db.query(`INSERT INTO posts (user_id, content, friends_only) VALUES ($1, $2, $3)`, [user.id, content, isFriend]);
 
     console.log("User made a post:", content);
 

@@ -65,7 +65,8 @@
           <div class="card mb-3 shadow-sm post" data-content="<%=post.content%>" data-username="<%=post.username%>">
             <div class="card-body">
               <h2 class="card-title fs-4"><%=post.first_name%></h2>
-              <h3 class="card-subtitle post-username text-body-secondary">@<%=post.username%></h3>
+              <h3 class="card-subtitle post-username text-body-secondary">@<%=post.username%><%if(post.friends_only){%>, #OnlyMyOrbit<%}%>
+              </h3>
               <p class="card-text post-txt"><%=post.content%></p>
               <small><%= new Date(post.created_at).toLocaleString() %></small>
               <div><form action="/post/comment" method="post">

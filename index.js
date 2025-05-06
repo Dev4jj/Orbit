@@ -125,6 +125,7 @@ req.session.myid= user.id
 
 app.get("/profile", async(req, res) => {
     const searched = req.query.search || "";
+    const {myid} = req.session;
 
     if (!req.session.username) {
         return res.redirect("/login"); 
@@ -157,6 +158,25 @@ if (!user) {
       ORDER BY posts.created_at DESC;
     `, [`%${searched}%`]);
 
+    const allPosts = postRes.rows;
+
+    const myFriendsQuery = await db.query(`
+    SELECT DISTINCT
+    CASE 
+    WHEN user1_id = $1 THEN user2_id
+    ELSE user1_id
+    END AS friend_id
+    FROM friends
+    WHERE user1_id = $1 OR user2_id = $1;
+        `, [myid]);
+
+    const friendIds = myFriendsQuery.rows.map(row => row.friend_id);
+
+    const visiblePosts = allPosts.filter(post =>{
+        if(!post.friends_only) return true;
+        return friendIds.includes(post.user_id);
+    }) ;
+
     //Fetch all comments
 
         const commentRes = await db.query(`
@@ -165,11 +185,11 @@ if (!user) {
             ORDER BY comments.created_at DESC;
             `);
 
-        const allPosts = postRes.rows;
+        
         const allComments = commentRes.rows;
            
             access = 1; 
-            res.render("index", { access, user, allPosts, orbitUsers, searched, allComments });
+            res.render("index", { access, user, allPosts: visiblePosts, orbitUsers, searched, allComments });
        
 }catch(err){
     console.error("Error occurred while fetching user data or posts:", err);

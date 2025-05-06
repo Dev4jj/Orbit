@@ -174,7 +174,8 @@ if (!user) {
 
     const visiblePosts = allPosts.filter(post =>{
         if(!post.friends_only) return true;
-        return friendIds.includes(post.user_id);
+        return friendIds.includes(post.user_id) || post.user_id === myid;
+    
     }) ;
 
     //Fetch all comments

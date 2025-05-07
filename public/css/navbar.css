@@ -62,11 +62,15 @@
 }
 
 .unadd-friend{
-  width: 20px;
+  display: inline-block;
+  width: 40px;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .unadd-friend:hover{
   cursor: pointer;
+  background-color:  rgba(211, 211, 211, 0.219);
 }
   
 /* update account styling */

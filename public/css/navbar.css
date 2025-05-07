@@ -55,6 +55,19 @@
 .visibleBar{
     display: block;
   }
+
+/* friends list aka MyOrbit */
+.frnd-list-div{
+  width: 80%;
+}
+
+.unadd-friend{
+  width: 20px;
+}
+
+.unadd-friend:hover{
+  cursor: pointer;
+}
   
 /* update account styling */
 

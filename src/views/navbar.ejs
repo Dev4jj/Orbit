@@ -142,13 +142,17 @@
             aria-label="close"
           ></button>
         </div>
-        <div class="modal-body">
-          <ul>
-            <li>
-              <form>
-
+        <div class="modal-body frnd-list-div">
+          <ul class="list-group mb-3">
+            <%friendsList.forEach((friend)=>{%>
+            <li class="list-group-item d-flex justify-content-between align-items-center ">
+              <span class="fw-bold"><%=friend.first_name%>(@<%=friend.username%>)</span>
+              <form class="ms-4 p-0">
+<img src="/images/remove.png" alt="remove user from your close orbit" class="unadd-friend"/>
+<input type="hidden" name="unadded_friend_id" value="<%=friend.id%>"/>
               </form>
             </li>
+            <%})%>
           </ul>
           <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>

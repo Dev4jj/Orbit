@@ -9,6 +9,7 @@ import connectPgSimple from "connect-pg-simple";
 import { createServer } from "http";
 import { Server } from 'socket.io';
 import axios from 'axios';
+import getFriendsList from "./friendsList.js";
 
 
 const app = express();
@@ -144,9 +145,12 @@ app.get("/profile", async(req, res) => {
 
 if (!user) {
     return res.status(404).json({ message: "User not found" });
-}
-        // Fetch posts for users
 
+}
+
+/*friends list */
+const friendsList = await getFriendsList(db, myid);
+        // Fetch posts for users
         
        const postRes = await db.query(`
             SELECT users.first_name, users.username, users.id AS user_id, posts.id AS post_id, posts.content, posts.friends_only, posts.created_at
@@ -190,7 +194,7 @@ if (!user) {
         const allComments = commentRes.rows;
            
             access = 1; 
-            res.render("index", { access, user, allPosts: visiblePosts, orbitUsers, searched, allComments });
+            res.render("index", { access, user, allPosts: visiblePosts, orbitUsers, searched, allComments, friendsList });
        
 }catch(err){
     console.error("Error occurred while fetching user data or posts:", err);
@@ -257,19 +261,20 @@ app.post("/post/comment", async(req, res)=>{
 //trending page
 
 app.get("/trending", async(req, res)=>{
-const {username} = req.session;
+const {username, myid} = req.session;
 
 if(!username){
     return res.status(401).redirect('/profile');
 }
 
 try{
+    const friendsList = await getFriendsList(db, myid);
 
 const response = await axios.get(newsDataUrl + `&language=en&country=ca&removeduplicate=1&size=10`);
 const allArticles = response.data.results;
 
     access=2;
-    res.render("index", {access, allArticles});
+    res.render("index", {access, allArticles, friendsList});
 }catch(err){
     console.error("Error occured while fetching trending data:",err);
     res.status(500).json({message: "Server error"});
@@ -287,6 +292,8 @@ app.get("/users", async(req, res)=>{
     }
     
     try{
+        const friendsList = await getFriendsList(db, myid);
+
     const usersNotYou = await db.query(`SELECT * FROM users WHERE username != $1`, [username])
     const orbitUsers = usersNotYou.rows;
 
@@ -318,7 +325,7 @@ if(friend.user1_id == myid){
 console.log(orbitUsersFiltered);
 
     access=3;
-    res.render("index", {access, orbitUsersFiltered, receivedRequests });
+    res.render("index", {access, orbitUsersFiltered, receivedRequests, friendsList });
     }catch(err){
     console.error("Error occurred while fetching user data or posts:", err);
     res.status(500).send(`An error occured: ${err.message}`);
@@ -385,15 +392,7 @@ if(!username){
 }
 
 try{
-
-   const friendResults =  await db.query(`
-       SELECT users.first_name, users.username, users.id
-       FROM friends fr
-       JOIN users ON fr.user2_id = users.id
-       WHERE fr.user1_id = $1;
-         `, [myid]);
-    
-    const friendsList = friendResults.rows
+    const friendsList = await getFriendsList(db, myid);
     console.log(friendsList);
 
     access=4;

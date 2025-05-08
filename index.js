@@ -403,6 +403,31 @@ try{
 }
 })
 
+//Removing user from your orbit
+
+app.post("/unadd_request", async(req,res)=>{
+    const myid = req.session.myid;
+    const unaddedId = req.body.unadded_friend_id;
+
+    try{
+        console.log(myid, unaddedId);
+
+        await db.query(`
+            DELETE FROM friends
+            WHERE
+             (user1_id=$1 AND user2_id=$2)
+            OR
+             (user1_id=$2 OR user2_id=$1)
+            `, [myid, unaddedId]);
+
+console.log("You deleted a user form your Orbit list");
+
+    res.redirect("/profile");
+    }catch(err){
+console.err("Error occured while sending unfriend request",err);
+    }
+})
+
 //user updates profile
 
 app.post("/update", async(req, res)=>{

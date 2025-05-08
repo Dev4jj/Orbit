@@ -410,7 +410,6 @@ app.post("/unadd_request", async(req,res)=>{
     const unaddedId = req.body.unadded_friend_id;
 
     try{
-        console.log(myid, unaddedId);
 
         await db.query(`
             DELETE FROM friends

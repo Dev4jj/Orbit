@@ -84,6 +84,21 @@ document.addEventListener("DOMContentLoaded", function() {
             document.querySelector(".req-list").classList.remove("d-none");
         }
 
+        /*this fucntionality should only go into effect if the screen width is below a certain number */
+        if(window.innerWidth <  700){
+if(e.target.closest('.msg-friend-li')){
+    document.querySelector('.msg-list-container').classList.add('d-none');
+    document.querySelector('.msg-container').classList.toggle('show-on-mobile');
+    document.querySelector('.return-btn-div').classList.remove('d-none');
+}else if (e.target.matches('.msg-return-btn')){
+    document.querySelector('.msg-list-container').classList.remove('d-none');
+    document.querySelector('.msg-container').classList.remove('show-on-mobile');
+    document.querySelector('.return-btn-div').classList.add('d-none');
+}}else{
+    document.querySelector('.msg-list-container').classList.remove('d-none');
+    document.querySelector('.return-btn-div').classList.add('d-none');
+    }
+
     });
     //basic form validation checks
 
@@ -148,21 +163,6 @@ fetch('/posts', {
             button.classList.add('active');
         });
     });
-
-    /*
-    document.getElementById("search-input").addEventListener("input", function() {
-        let filter = this.value.toLowerCase(); // Get the value of the input and convert it to lowercase
-        let friends = document.querySelectorAll("#friendsList .user-msg-list"); // Get all the friend list items
-    
-        friends.forEach(function(friend) {
-            let friendName = friend.querySelector(".friend-name").textContent.toLowerCase(); // Get the friend's name and username
-            if (friendName.indexOf(filter) > -1) {
-                friend.style.display = ""; // Show the friend if the name matches the filter
-            } else {
-                friend.style.display = "none"; // Hide the friend if the name doesn't match the filter
-            }
-        });
-    });*/
 
 
 });

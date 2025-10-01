@@ -3,28 +3,34 @@
     align-items: center;
 }
 
+.trends-img{
+   width: 100%;
+   max-height: 250px;
+border-radius: 10px;
+}
+
 .trend-title{
     text-align: center;
 }
 
-.trend-card{
-    border: 1px solid #ccc; 
-    border-radius: 3px;
-    min-height: 125px;
-    max-height: 125px;
-    overflow: hidden;
+.accordion-button{
+    min-height: 100px;
+    display: flex;
+    align-items: center;
 }
 
-.card-body{
-    align-items: center;
+.accordion-button:not(.collapsed) {
+  background-color: white !important;
+  color: inherit !important;
+}
+
+.ranking{
+    width: 40px;
+    text-align: center;
 }
 
 .rank-num{
     font-size: 25px;
-}
-
-.card-title{
-    font-size: 20px;
 }
 
 .search-vol{

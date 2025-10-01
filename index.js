@@ -270,7 +270,7 @@ if(!username){
 try{
     const friendsList = await getFriendsList(db, myid);
 
-const response = await axios.get(newsDataUrl + `&language=en&country=ca&removeduplicate=1&size=10`);
+const response = await axios.get(newsDataUrl + `&language=en&country=ca&removeduplicate=1&size=10&image=1&prioritydomain=top`);
 const allArticles = response.data.results;
 
     access=2;

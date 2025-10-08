@@ -9,7 +9,11 @@
           <div class="card">
             <div class="row">
               <div class="col-4">
-                <img src="/images/profile-user.png" class="my-pfp" />
+                <img src="/images/profile-user.png" class="my-pfp" alt="default-pfp"/>
+                <form id="uploadForm" action="upload-pfp" method="POST">
+                  <input type="file" name="pfp" id="uploadPfp"/>
+                </form>
+                <!--Create functionality that allows users to upload their own pfp that is stored in the backend-->
               </div>
               <div class="col-8">
                 <div class="card-body">
@@ -17,6 +21,7 @@
                   <div class="card-subtitle mb-2 text-body-secondary">
                     @<%=user.username%>
                   </div>
+                  <input type="hidden" name="currentUser" value="<%=user.id%>" id="currentUser"/>
                   <p class="card-text pf-bio">
                     <% if (user.bio === null) { %> 
                       Create your own unique profile bio by navigating to your Profile, then account...
@@ -62,8 +67,13 @@
           <h1 class="feed-title"> THE TIMELINE</h1>
           <% if(allPosts.length > 0){ %>
           <% allPosts.forEach(post =>{%>
-          <div class="card mb-3 shadow-sm post" data-content="<%=post.content%>" data-username="<%=post.username%>">
+          <div class="card mb-3 shadow-sm post <%= post.user_id == user.id? 'my-post': ''%>" data-content="<%=post.content%>" data-username="<%=post.username%>" data-user-id="<%=post.user_id%>">
             <div class="card-body">
+      
+                <form action="/post/delete/<%=post.post_id%>" method="post" class="dlt-post" onsubmit="return confirm('Delete this post?');">
+                  <button type="submit" class="btn  <%=post.user_id == user.id? 'btn-danger':'disabled btn-secondary'%>">X</button>
+                </form>
+                
               <h2 class="card-title fs-4"><%=post.first_name%></h2>
               <h3 class="card-subtitle post-username text-body-secondary">@<%=post.username%><%if(post.friends_only){%>, #OnlyMyOrbit<%}%>
               </h3>
@@ -71,7 +81,6 @@
               <small><%= new Date(post.created_at).toLocaleString() %></small>
               <div><form action="/post/comment" method="post">
                 <input type="hidden" name="post_id" value="<%=post.post_id%>"/>
-                <input type="hidden" name="user_id" value="<%=post.user_id%>"/>
                 <input type="text" class="msg" name="comment" placeholder="Add a comment..." required autocomplete="off"/>
               </form></div>
               <hr/>

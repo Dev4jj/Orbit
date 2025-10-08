@@ -256,6 +256,24 @@ app.post("/post", async (req, res) => {
   }
 });
 
+//user deletes their post
+app.post("/post/delete/:postid",async(req, res)=>{
+const {postid}=req.params;
+const {myid}=req.session;
+try{
+
+  await db.query(
+    `DELETE FROM posts WHERE id=$1 AND user_id=$2`, [postid, myid]
+  );
+
+  console.log("Deleted post with id:", postid);
+  res.redirect("/profile");
+
+}catch(err){
+  console.log("Unable to delete post",err);
+}
+})
+
 //user makes a comment on post
 
 app.post("/post/comment", async (req, res) => {
@@ -554,9 +572,6 @@ app.post("/delete-account", async (req, res) => {
   } else {
     return res.status(400).send({ message: "Account deletion not confirmed" });
   }
-
-
-  //Delete post functionality for users
 });
 
 httpServer.listen(port, () => {

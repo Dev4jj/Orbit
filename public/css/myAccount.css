@@ -77,6 +77,11 @@ body{
     cursor: pointer;
 }
 
+.dlt-post{
+    position: absolute;
+    right: 10px;
+}
+
 .post-username{
     font-size: 15px;
 }

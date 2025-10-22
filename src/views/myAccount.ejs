@@ -1,112 +1,210 @@
-
 <%- include("navbar.ejs", {searchBar:true})%>
 <div class="container">
   <div class="row">
-
     <div class="col feed-col">
       <div class="the-feeds-container">
-        <div class="mb-3 shadow-sm">
-          <div class="card">
-            <div class="row">
-              <div class="col-4">
-                <img src="/images/profile-user.png" class="my-pfp" alt="default-pfp"/>
-                <form id="uploadForm" action="upload-pfp" method="POST">
-                  <input type="file" name="pfp" id="uploadPfp"/>
-                </form>
-                <!--Create functionality that allows users to upload their own pfp that is stored in the backend-->
-              </div>
-              <div class="col-8">
-                <div class="card-body">
-                  <div class="card-title pf-name"><%=user.first_name%></div>
-                  <div class="card-subtitle mb-2 text-body-secondary">
-                    @<%=user.username%>
+        <div class="bio-post-div <%=searched? 'd-none':'block'%>">
+          <div class="mb-3 shadow-sm">
+            <div class="card">
+              <div class="row">
+                <div
+                  class="col-4 d-flex justify-content-center align-items-center"
+                >
+                  <img
+                    src="<%= user.pfp || '/images/profile-user.png' %>"
+                    alt="Profile Picture"
+                    class="my-pfp"
+                    id="profileImg"
+                    data-bs-toggle="modal"
+                    data-bs-target="#uploadModal"
+                  />
+
+                  
+                  <div
+                    class="modal fade"
+                    id="uploadModal"
+                    tabindex="-1"
+                    aria-labelledby="uploadModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content text-center">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="uploadModalLabel">
+                            Upload New Profile Picture
+                          </h5>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+
+                        <div class="modal-body">
+                          <form
+                            id="uploadForm"
+                            action="/profile/upload-pfp"
+                            method="POST"
+                            enctype="multipart/form-data"
+                          >
+                            <input
+                              type="file"
+                              name="pfp"
+                              id="uploadInput"
+                              accept="image/*"
+                              class="form-control mb-3"
+                            />
+                            Please confirm your Profile Picture change
+                          </form>
+                        </div>
+
+                        <div class="modal-footer justify-content-center">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            class="btn btn-primary"
+                            form="uploadForm"
+                          >
+                            Confirm
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <input type="hidden" name="currentUser" value="<%=user.id%>" id="currentUser"/>
-                  <p class="card-text pf-bio">
-                    <% if (user.bio === null) { %> 
-                      Create your own unique profile bio by navigating to your Profile, then account...
-                  <% } else { %>
-                      <%= user.bio %>
-                  <% } %>
-                  </p>
+
+                </div>
+                <div class="col-8">
+                  <div class="card-body">
+                    <div class="card-title pf-name"><%=user.first_name%></div>
+                    <div class="card-subtitle mb-2 text-body-secondary">
+                      @<%=user.username%>
+                    </div>
+                    <input
+                      type="hidden"
+                      name="currentUser"
+                      value="<%=user.id%>"
+                      id="currentUser"
+                    />
+                    <p class="card-text pf-bio">
+                      <% if (user.bio === null) { %> Create your own unique
+                      profile bio by navigating to your Profile, then account...
+                      <% } else { %> <%= user.bio %> <% } %>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="my-msg mb-3 shadow-sm">
-          <form action="/post" method="post" id="postForm" class="row">
-            <div class="col-12 col-sm-9 mt-2">
-              <input
-                placeholder="What's on your mind?"
-                class="msg"
-                id="myMsg"
-                name="content"
-                maxlength="100"
-                autocomplete="off"
-                required
-              />
-              <div class="friend-post-check">
-                <!--Creeate a checkbox that allows users to limit the post visibility to only those who are their firends-->
-                <label class="post-option-txt">
-                  <input type="checkbox" id="isFriend" name="isFriend" />
-                  Make this post only visible to friends
+          <div class="my-msg mb-3 shadow-sm">
+            <form action="/post" method="post" id="postForm" class="row">
+              <div class="col-12 col-sm-9 mt-2">
+                <input
+                  placeholder="What's on your mind?"
+                  class="msg"
+                  id="myMsg"
+                  name="content"
+                  maxlength="100"
+                  autocomplete="off"
+                  required
+                />
+                <div class="friend-post-check">
+                  <label class="post-option-txt">
+                    <input type="checkbox" id="isFriend" name="isFriend" />
+                    Make this post only visible to friends
                   </label>
                 </div>
-            </div>
-            <div class="col-12 col-sm-3 mt-2">
-              <button type="submit" class="post-btn" id="postBtn">POST</button>
-            </div>
-          </form>
+              </div>
+              <div class="col-12 col-sm-3 mt-2">
+                <button type="submit" class="post-btn" id="postBtn">
+                  POST
+                </button>
+              </div>
+            </form>
 
-          <hr />
+            <hr />
+          </div>
         </div>
 
         <div class="the-feed">
-          <h1 class="feed-title"> THE TIMELINE</h1>
-          <% if(allPosts.length > 0){ %>
-          <% allPosts.forEach(post =>{%>
-          <div class="card mb-3 shadow-sm post <%= post.user_id == user.id? 'my-post': ''%>" data-content="<%=post.content%>" data-username="<%=post.username%>" data-user-id="<%=post.user_id%>">
+          <h1 class="feed-title">THE TIMELINE</h1>
+          <% if(allPosts.length > 0){ %> <% allPosts.forEach(post =>{%>
+          <div
+            class="card mb-3 shadow-sm post <%= post.user_id == user.id? 'my-post': ''%>"
+            data-content="<%=post.content%>"
+            data-username="<%=post.username%>"
+            data-user-id="<%=post.user_id%>"
+          >
             <div class="card-body">
-      
-                <form action="/post/delete/<%=post.post_id%>" method="post" class="dlt-post" onsubmit="return confirm('Delete this post?');">
-                  <button type="submit" class="btn  <%=post.user_id == user.id? 'btn-danger':'disabled btn-secondary'%>">X</button>
-                </form>
-                
+              <form
+                action="/post/delete/<%=post.post_id%>"
+                method="post"
+                class="dlt-post"
+                onsubmit="return confirm('Delete this post?');"
+              >
+                <button
+                  type="submit"
+                  class="btn <%=post.user_id == user.id? 'btn-danger':'disabled btn-secondary'%>"
+                >
+                  X
+                </button>
+              </form>
+
               <h2 class="card-title fs-4"><%=post.first_name%></h2>
-              <h3 class="card-subtitle post-username text-body-secondary">@<%=post.username%><%if(post.friends_only){%>, #OnlyMyOrbit<%}%>
+              <h3 class="card-subtitle post-username text-body-secondary">
+                @<%=post.username%><%if(post.friends_only){%>, #OnlyMyOrbit<%}%>
               </h3>
               <p class="card-text post-txt"><%=post.content%></p>
               <small><%= new Date(post.created_at).toLocaleString() %></small>
-              <div><form action="/post/comment" method="post">
-                <input type="hidden" name="post_id" value="<%=post.post_id%>"/>
-                <input type="text" class="msg" name="comment" placeholder="Add a comment..." required autocomplete="off"/>
-              </form></div>
-              <hr/>
+              <div>
+                <form action="/post/comment" method="post">
+                  <input
+                    type="hidden"
+                    name="post_id"
+                    value="<%=post.post_id%>"
+                  />
+                  <input
+                    type="text"
+                    class="msg"
+                    name="comment"
+                    placeholder="Add a comment..."
+                    required
+                    autocomplete="off"
+                  />
+                </form>
+              </div>
+              <hr />
               <div class="comment-section">
-                <% const postComments = allComments.filter(comment => comment.post_id === post.post_id) %>
+                <% const postComments = allComments.filter(comment =>
+                comment.post_id === post.post_id) %>
                 <div class="comment">
-                  <% if(postComments.length > 0){ %>
-                    <% postComments.forEach(comment =>{ %>
+                  <% if(postComments.length > 0){ %> <%
+                  postComments.forEach(comment =>{ %>
                   <div class="msg mt-2">
-                  <p class="comment-username">@<%= comment.comment_username %></p>
-                  <p class="comment-text"><%= comment.comment%></p>
+                    <p class="comment-username">
+                      @<%= comment.comment_username %>
+                    </p>
+                    <p class="comment-text"><%= comment.comment%></p>
                   </div>
-                  <%});%>
-                  <%}else{%>
-                    <p>No comments</p>
-                    <%}%>
+                  <%});%> <%}else{%>
+                  <p>No comments</p>
+                  <%}%>
                 </div>
               </div>
             </div>
           </div>
           <%})}else{%>
-            <p class="text-center">No posts found.</p>
+          <p class="text-center">No posts found.</p>
           <%}%>
         </div>
       </div>
     </div>
-
   </div>
 </div>

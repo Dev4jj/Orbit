@@ -9,6 +9,7 @@ import connectPgSimple from "connect-pg-simple";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import axios from "axios";
+import multer from "multer";
 import getFriendsList from "./friendsList.js";
 
 const app = express();
@@ -52,6 +53,19 @@ app.use(
     cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 },
   })
 );
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads/pfps')
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const extension = path.extname(file.originalname)
+    cb(null, file.fieldname + "-" + uniqueSuffix + extension)
+  }
+})
+
+const upload = multer({ storage: storage })
 
 const newsDataUrl = `https://newsdata.io/api/1/latest?apikey=${process.env.NEWS_KEY}`; //api url for trending page
 
@@ -221,6 +235,23 @@ app.get("/profile", async (req, res) => {
   }
 });
 
+//User updates profile picture
+app.post("/profile/upload-pfp", upload.single('pfp'),async (req, res)=>{
+    const { myid } = req.session;
+
+  try{
+console.log(req.file);
+const pfpPath = `/uploads/pfps/${req.file.filename}`;
+
+await db.query(`UPDATE users SET pfp = $1 WHERE id = $2`, [pfpPath, myid]);
+console.log("success you accessed the update pfp route");
+res.redirect("/profile");
+
+  }catch(err){
+console.log("Error occured when uploading image", err);
+  }
+})
+
 //user makes a post
 
 app.post("/post", async (req, res) => {
@@ -319,8 +350,13 @@ app.get("/trending", async (req, res) => {
     );
     const allArticles = response.data.results;
 
+    const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [
+      username,
+    ]);
+    const user = userRes.rows[0];
+
     access = 2;
-    res.render("index", { access, allArticles, friendsList });
+    res.render("index", { access, allArticles, friendsList, user });
   } catch (err) {
     console.error("Error occured while fetching trending data:", err);
     res.status(500).json({ message: "Server error" });
@@ -380,12 +416,18 @@ app.get("/users", async (req, res) => {
     );
     console.log(orbitUsersFiltered);
 
+    const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [
+      username,
+    ]);
+    const user = userRes.rows[0];
+
     access = 3;
     res.render("index", {
       access,
       orbitUsersFiltered,
       receivedRequests,
       friendsList,
+      user
     });
   } catch (err) {
     console.error("Error occurred while fetching user data or posts:", err);

@@ -7,7 +7,8 @@ id SERIAL PRIMARY KEY,
 first_name VARCHAR(50) NOT NULL,
 username VARCHAR(50) NOT NULL UNIQUE,
 password VARCHAR(100) NOT NULL,
-bio TEXT
+bio TEXT,
+pfp TEXT DEFAULT '/images/profile-user.png'
 );
 
 

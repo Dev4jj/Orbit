@@ -11,6 +11,7 @@ import { Server } from "socket.io";
 import axios from "axios";
 import multer from "multer";
 import getFriendsList from "./friendsList.js";
+import fs from "fs";
 
 const app = express();
 const httpServer = createServer(app);
@@ -241,9 +242,25 @@ app.post("/profile/upload-pfp", upload.single('pfp'),async (req, res)=>{
 
   try{
 console.log(req.file);
-const pfpPath = `/uploads/pfps/${req.file.filename}`;
+const newpfpPath = `/uploads/pfps/${req.file.filename}`;
 
-await db.query(`UPDATE users SET pfp = $1 WHERE id = $2`, [pfpPath, myid]);
+const {rows} = await db.query(`SELECT pfp FROM users WHERE id = $1`, [myid]);
+console.log(rows[0].pfp)
+const oldPfp = rows[0]?.pfp;
+
+if(oldPfp && oldPfp !== "/images/profile-user.png"){
+const oldPfpPath = path.join(__dirname, "public", oldPfp)
+
+
+  fs.unlink(oldPfpPath, (err)=>{
+    if(err){
+      console.log("Unable to delete old Pfp file", err);
+    }else{
+      console.log("old pfp file successfully deleted");
+    }
+  })
+}
+await db.query(`UPDATE users SET pfp = $1 WHERE id = $2`, [newpfpPath, myid]);
 console.log("success you accessed the update pfp route");
 res.redirect("/profile");
 

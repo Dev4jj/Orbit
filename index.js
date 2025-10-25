@@ -384,6 +384,8 @@ app.get("/trending", async (req, res) => {
 
 app.get("/users", async (req, res) => {
   const { username, myid } = req.session;
+  const findUser =req.query.findUser || "";
+  console.log(findUser);
 
   if (!username || !myid) {
     return res.status(401).redirect("/profile");
@@ -392,12 +394,31 @@ app.get("/users", async (req, res) => {
   try {
     const friendsList = await getFriendsList(db, myid);
 
+    const {rows: orbitUsersFiltered}= await db.query(
+      `
+      SELECT users.id, users.first_name, users.username
+      FROM users
+      WHERE users.id!=$1
+      AND users.id NOT IN(
+      SELECT CASE
+      WHEN friends.user1_id=$1 THEN friends.user2_id
+      ELSE friends.user1_id
+      END 
+      FROM friends
+      WHERE friends.user1_id=$1 OR friends.user2_id=$1
+      )
+      AND (users.username ILIKE '%' || $2 || '%' OR users.first_name ILIKE '%' || $2 || '%')
+      ORDER BY users.first_name ASC
+      `,
+      [myid, findUser]
+    );
+/*
     const usersNotYou = await db.query(
       `SELECT * FROM users WHERE username != $1`,
       [username]
     );
     const orbitUsers = usersNotYou.rows;
-
+*/
     const sentRequest = await db.query(
       `
         SELECT fr.id, fr.sender_id, fr.recipient_id, users.first_name AS sender_fn, users.username AS sender_un
@@ -408,7 +429,7 @@ app.get("/users", async (req, res) => {
       [myid]
     );
     const receivedRequests = sentRequest.rows;
-
+/*
     const friendships = await db.query(
       `
         SELECT user1_id, user2_id FROM friends
@@ -432,7 +453,7 @@ app.get("/users", async (req, res) => {
       (user) => !friendIds.has(user.id)
     );
     console.log(orbitUsersFiltered);
-
+*/
     const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [
       username,
     ]);
@@ -442,6 +463,7 @@ app.get("/users", async (req, res) => {
     res.render("index", {
       access,
       orbitUsersFiltered,
+      findUser,
       receivedRequests,
       friendsList,
       user
@@ -451,6 +473,7 @@ app.get("/users", async (req, res) => {
     res.status(500).send(`An error occured: ${err.message}`);
   }
 });
+
 
 app.post("/sent_friend_req", async (req, res) => {
   const { username } = req.session;
@@ -475,6 +498,7 @@ app.post("/sent_friend_req", async (req, res) => {
     res.status(500).send(`An error occured: ${err.message}`);
   }
 });
+
 
 app.post("/accept_deny_req", async (req, res) => {
   const { username } = req.session;

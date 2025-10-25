@@ -6,12 +6,15 @@
     <h1 id="user-pg-title">Expand Your Orbit</h1>
 
     <div class="col-8">
+      <form action="/users" method="get">
       <input
         id="filter-users"
         type="text"
-        name="filter-users"
+        name="findUser"
+        value="<%=findUser || ''%>"
         placeholder="Search Users"
       />
+      </form>
     </div>
     <div class="col-4 d-flex justify-content-end mb-3">
       <button class="user-req-btn active" id="user-btn">Users</button>

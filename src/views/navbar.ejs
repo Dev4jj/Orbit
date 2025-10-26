@@ -19,10 +19,11 @@
         </div>
   
         <div class="d-flex align-items-center">
-          
+          <div class="d-none d-md-flex align-items-center">
     <a class="nav-link active mb-2" aria-current="page" href="/profile"><img src="/images/home.png" class="page-nav-img" alt="My home page"/></a>
     <a class="nav-link mb-2" href="/trending"><img src="/images/hashtag.png" class="page-nav-img" alt="Trends"/></a>
     <a class="nav-link mb-2" href="/users"><img src="/images/friends.png" class="page-nav-img" alt="Users"/></a>
+    </div>
   
         
           <div class="dropdown-center pf-dropdown-btn ms-2">
@@ -37,6 +38,14 @@
               <img class="nav-icon" src="<%= user.pfp || '/images/profile-user.png'%>" />Profile
             </button>
             <ul class="dropdown-menu">
+
+
+<div class="d-md-none">
+  <li><a class="dropdown-item btn btn-primary" aria-current="page" href="/profile">Home</a></li>
+  <li><a class="dropdown-item btn btn-primary" href="/trending">Trending</a></li>
+  <li><a class="dropdown-item btn btn-primary" href="/users">Users</a></li>
+</div>
+
               <li>
                 <a
                   class="dropdown-item btn btn-primary"

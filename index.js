@@ -25,11 +25,16 @@ const __dirname = path.dirname(__filename);
 
 //connect to db
 const db = new pg.Client({
+connectionString: process.env.DATABASE_url,
+ssl:{
+  rejectUnauthorized: false,
+},
+  /*
   user: process.env.USER,
   host: process.env.HOST,
   database: process.env.DB,
   password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  port: process.env.DB_PORT,*/
 });
 
 db.connect()

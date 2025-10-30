@@ -24,8 +24,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 //connect to db
+//remove "conncetionString and ssl if not using render"
 const db = new pg.Client({
-connectionString: process.env.DATABASE_url,
+connectionString: process.env.DATABASE_URL,
 ssl:{
   rejectUnauthorized: false,
 },
@@ -661,7 +662,7 @@ app.post("/delete-account", async (req, res) => {
     return res.status(400).send({ message: "Account deletion not confirmed" });
   }
 });
-
+//remone "0.0.0.0 if not using render"
 httpServer.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on port ${port}`);
 });

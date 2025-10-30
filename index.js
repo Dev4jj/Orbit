@@ -17,7 +17,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-const pgSession = connectPgSimple(session);
+
 dotenv.config();
 const port = process.env.PORT || 8000;
 const __filename = fileURLToPath(import.meta.url);
@@ -25,7 +25,8 @@ const __dirname = path.dirname(__filename);
 
 //connect to db
 //remove "conncetionString and ssl if not using render"
-const db = new pg.Client({
+const {Pool} =pg;
+const db = new Pool({
 connectionString: process.env.DATABASE_URL,
 ssl:{
   rejectUnauthorized: false,
@@ -48,6 +49,7 @@ app.set("views", path.join(__dirname, "src", "views"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
+const pgSession = connectPgSimple(session);
 app.use(
   session({
     store: new pgSession({
@@ -57,7 +59,7 @@ app.use(
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 },
+    cookie: { secure: process.env.NODE_ENV ==="production", sameSite: process.env.NODE_ENV ==="production"? "none":"lax", maxAge: 1000 * 60 * 60 * 24 },
   })
 );
 
@@ -76,9 +78,8 @@ const upload = multer({ storage: storage })
 
 const newsDataUrl = `https://newsdata.io/api/1/latest?apikey=${process.env.NEWS_KEY}`; //api url for trending page
 
-let access = 0; // check databse if user info matches then set access to true or false
-
 app.get("/", (req, res) => {
+  const access = req.session.acess || 0;
   res.render("index", { access });
 });
 
@@ -88,7 +89,7 @@ io.on("connection", (socket) => {
 
 // check if user already exists in future database
 app.post("/signup", async (req, res) => {
-  access = 0;
+  
   const { fName, username } = req.body;
 
   try {
@@ -141,6 +142,7 @@ app.post("/login", async (req, res) => {
 
     req.session.username = user.username;
     req.session.myid = user.id;
+    req.session.access=1;
 
     console.log("User is logged in:", user.username);
     return res.redirect("/profile");
@@ -226,9 +228,9 @@ app.get("/profile", async (req, res) => {
 
     const allComments = commentRes.rows;
 
-    access = 1;
+    req.session.access = 1;
     res.render("index", {
-      access,
+      access: req.session.access,
       user,
       allPosts: visiblePosts,
       orbitUsers,
@@ -378,8 +380,8 @@ app.get("/trending", async (req, res) => {
     ]);
     const user = userRes.rows[0];
 
-    access = 2;
-    res.render("index", { access, allArticles, friendsList, user });
+    req.session.access = 2;
+    res.render("index", { access:req.session.access, allArticles, friendsList, user });
   } catch (err) {
     console.error("Error occured while fetching trending data:", err);
     res.status(500).json({ message: "Server error" });
@@ -465,9 +467,9 @@ app.get("/users", async (req, res) => {
     ]);
     const user = userRes.rows[0];
 
-    access = 3;
+    req.session.access = 3;
     res.render("index", {
-      access,
+      access:req.session.access,
       orbitUsersFiltered,
       findUser,
       receivedRequests,
@@ -623,8 +625,8 @@ app.get("/logout", (req, res) => {
       return res.status(500).send({ message: "Error during logout." });
     }
     res.clearCookie("connect.sid");
-    access = 0;
-    res.render("index", { access });
+  
+    res.render("index", { access:0 });
   });
   console.log("user logged out");
 });

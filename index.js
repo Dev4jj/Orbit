@@ -79,7 +79,10 @@ const upload = multer({ storage: storage })
 const newsDataUrl = `https://newsdata.io/api/1/latest?apikey=${process.env.NEWS_KEY}`; //api url for trending page
 
 app.get("/", (req, res) => {
-  const access = req.session.access || 0;
+  if(req.session && req.session.username){
+    return res.redirect("/profile")
+  }
+  const access = 0;
   res.render("index", { access, searched:"" });
 });
 

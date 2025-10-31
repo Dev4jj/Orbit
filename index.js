@@ -79,10 +79,15 @@ const upload = multer({ storage: storage })
 const newsDataUrl = `https://newsdata.io/api/1/latest?apikey=${process.env.NEWS_KEY}`; //api url for trending page
 
 app.get("/", (req, res) => {
-  const access = req.session.acess || 0;
-  res.render("index", { access });
+  const access = req.session.access || 0;
+  res.render("index", { access, searched:"" });
 });
 
+app.get("/login", (req, res)=>{
+  const access = 0;
+  res.render("index", {access, searched: ""})
+})
+//remove io connection
 io.on("connection", (socket) => {
   console.log("User is connected");
 });
@@ -109,7 +114,7 @@ app.post("/signup", async (req, res) => {
       [fName, username, secPass]
     );
     console.log("user was created");
-    res.render("index", { access });
+    res.render("index", { access:0, searched:"" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server error" });
@@ -628,7 +633,7 @@ app.get("/logout", (req, res) => {
     }
     res.clearCookie("connect.sid");
   
-    res.render("index", { access:0 });
+    res.render("index", { access:0, searched: "" });
   });
   console.log("user logged out");
 });

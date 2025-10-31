@@ -237,6 +237,7 @@ app.get("/profile", async (req, res) => {
       searched,
       allComments,
       friendsList,
+      searched 
     });
   } catch (err) {
     console.error("Error occurred while fetching user data or posts:", err);
@@ -381,7 +382,7 @@ app.get("/trending", async (req, res) => {
     const user = userRes.rows[0];
 
     req.session.access = 2;
-    res.render("index", { access:req.session.access, allArticles, friendsList, user });
+    res.render("index", { access:req.session.access, allArticles, friendsList, user, searched:"" });
   } catch (err) {
     console.error("Error occured while fetching trending data:", err);
     res.status(500).json({ message: "Server error" });
@@ -474,7 +475,8 @@ app.get("/users", async (req, res) => {
       findUser,
       receivedRequests,
       friendsList,
-      user
+      user, 
+      searched:""
     });
   } catch (err) {
     console.error("Error occurred while fetching user data or posts:", err);

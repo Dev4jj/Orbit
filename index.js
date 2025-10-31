@@ -84,8 +84,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/login", (req, res)=>{
-  const access = 0;
-  res.render("index", {access, searched: ""})
+  res.redirect("/")
 })
 //remove io connection
 io.on("connection", (socket) => {
@@ -132,7 +131,7 @@ app.post("/login", async (req, res) => {
 
     if (!user) {
       console.log("Login attempt with invalid username:", username);
-      return res.redirect("/");
+      return res.redirect("/login");
     }
 
     const checkPas = await bcrypt.compare(password, user.password);
@@ -142,7 +141,7 @@ app.post("/login", async (req, res) => {
         "Login attempt with invalid password for username:",
         username
       );
-      return res.redirect("/");
+      return res.redirect("/login");
     }
 
     req.session.username = user.username;
@@ -153,7 +152,7 @@ app.post("/login", async (req, res) => {
     return res.redirect("/profile");
   } catch (err) {
     console.log(err);
-    res.redirect("/");
+    res.redirect("/login");
   }
 });
 

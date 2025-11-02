@@ -87,7 +87,11 @@ app.get("/", (req, res) => {
 });
 
 app.get("/login", (req, res)=>{
-  res.redirect("/")
+  if(req.session && req.session.username){
+    return res.redirect("/profile")
+  }
+  const access = 0;
+  res.render("index", { access, searched:"" });
 })
 //remove io connection
 io.on("connection", (socket) => {

@@ -49,7 +49,7 @@ app.set("views", path.join(__dirname, "src", "views"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
-app.srt("trust proxy", 1);
+app.set("trust proxy", 1);
 const pgSession = connectPgSimple(session);
 app.use(
   session({

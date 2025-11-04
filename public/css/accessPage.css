@@ -39,6 +39,9 @@ width: 90%;
 .ls-btn{
     background-color: white;
     padding: 5px 40px;
+    color: black;
+    border-radius: 10px;
+    border: 1px solid black;
 }
 
 .ls-btn:hover{

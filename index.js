@@ -20,19 +20,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 //connect to db
-//remove "conncetionString and ssl if not using render"
 const {Pool} =pg;
 const db = new Pool({
 connectionString: process.env.DATABASE_URL,
 ssl:{
   rejectUnauthorized: false,
 },
-  /*
-  user: process.env.USER,
-  host: process.env.HOST,
-  database: process.env.DB,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,*/
+  
 });
 
 db.connect()
@@ -130,17 +124,12 @@ app.post("/login", async (req, res) => {
     const user = userRes.rows[0];
 
     if (!user) {
-      console.log("Login attempt with invalid username:", username);
       return res.redirect("/login");
     }
 
     const checkPas = await bcrypt.compare(password, user.password);
 
     if (!checkPas) {
-      console.log(
-        "Login attempt with invalid password for username:",
-        username
-      );
       return res.redirect("/login");
     }
 
@@ -148,7 +137,6 @@ app.post("/login", async (req, res) => {
     req.session.myid = user.id;
     req.session.access=1;
 
-    console.log("User is logged in:", user.username);
     return res.redirect("/profile");
   } catch (err) {
     console.log(err);
@@ -258,7 +246,6 @@ console.log(req.file);
 const newpfpPath = `/uploads/pfps/${req.file.filename}`;
 
 const {rows} = await db.query(`SELECT pfp FROM users WHERE id = $1`, [myid]);
-console.log(rows[0].pfp)
 const oldPfp = rows[0]?.pfp;
 
 if(oldPfp && oldPfp !== "/images/profile-user.png"){
@@ -287,7 +274,6 @@ console.log("Error occured when uploading image", err);
 app.post("/post", async (req, res) => {
   const { username } = req.session;
   const { content, isFriend } = req.body;
-  console.log(isFriend);
 
   if (!username) {
     return res.status(401).redirect("/profile");
@@ -309,8 +295,6 @@ app.post("/post", async (req, res) => {
       [user.id, content, isFriend]
     );
 
-    console.log("User made a post:", content);
-
     res.redirect("/profile");
   } catch (err) {
     console.error("Error occured while making a post", err);
@@ -327,7 +311,6 @@ try{
     `DELETE FROM posts WHERE id=$1 AND user_id=$2`, [postid, myid]
   );
 
-  console.log("Deleted post with id:", postid);
   res.redirect("/profile");
 
 }catch(err){
@@ -354,7 +337,6 @@ app.post("/post/comment", async (req, res) => {
       `INSERT INTO comments (post_id, user_id, comment, comment_username) VALUES ($1, $2, $3, $4)`,
       [post_id, user_id, comment, username]
     );
-    console.log("User made a comment:", comment);
 
     res.redirect("/profile");
   } catch (err) {
@@ -398,7 +380,6 @@ app.get("/trending", async (req, res) => {
 app.get("/users", async (req, res) => {
   const { username, myid } = req.session;
   const findUser =req.query.findUser || "";
-  console.log(findUser);
 
   if (!username || !myid) {
     return res.status(401).redirect("/profile");
@@ -425,13 +406,7 @@ app.get("/users", async (req, res) => {
       `,
       [myid, findUser]
     );
-/*
-    const usersNotYou = await db.query(
-      `SELECT * FROM users WHERE username != $1`,
-      [username]
-    );
-    const orbitUsers = usersNotYou.rows;
-*/
+
     const sentRequest = await db.query(
       `
         SELECT fr.id, fr.sender_id, fr.recipient_id, users.first_name AS sender_fn, users.username AS sender_un
@@ -442,31 +417,7 @@ app.get("/users", async (req, res) => {
       [myid]
     );
     const receivedRequests = sentRequest.rows;
-/*
-    const friendships = await db.query(
-      `
-        SELECT user1_id, user2_id FROM friends
-        WHERE user1_id = $1 OR user2_id = $1
-        `,
-      [myid]
-    );
 
-    console.log(friendships.rows);
-    const friendIds = new Set();
-
-    friendships.rows.forEach((friend) => {
-      if (friend.user1_id == myid) {
-        friendIds.add(friend.user2_id);
-      } else {
-        friendIds.add(friend.user1_id);
-      }
-    });
-
-    const orbitUsersFiltered = orbitUsers.filter(
-      (user) => !friendIds.has(user.id)
-    );
-    console.log(orbitUsersFiltered);
-*/
     const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [
       username,
     ]);
@@ -634,7 +585,6 @@ app.get("/logout", (req, res) => {
   
     res.render("index", { access:0, searched: "" });
   });
-  console.log("user logged out:", req.session.username);
 });
 
 app.post("/delete-account", async (req, res) => {
@@ -670,7 +620,8 @@ app.post("/delete-account", async (req, res) => {
     return res.status(400).send({ message: "Account deletion not confirmed" });
   }
 });
-//remone "0.0.0.0 if not using render"
+
+
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on port ${port}`);
 });

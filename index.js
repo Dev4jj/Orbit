@@ -6,16 +6,12 @@ import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import pg from "pg";
 import connectPgSimple from "connect-pg-simple";
-import { createServer } from "http";
-import { Server } from "socket.io";
 import axios from "axios";
 import multer from "multer";
 import getFriendsList from "./friendsList.js";
 import fs from "fs";
 
 const app = express();
-const httpServer = createServer(app);
-const io = new Server(httpServer);
 
 
 dotenv.config();
@@ -94,10 +90,6 @@ app.get("/login", (req, res)=>{
   const access = 0;
   res.render("index", { access, searched:"" });
 })
-//remove io connection
-io.on("connection", (socket) => {
-  console.log("User is connected");
-});
 
 // check if user already exists in future database
 app.post("/signup", async (req, res) => {
@@ -642,7 +634,7 @@ app.get("/logout", (req, res) => {
   
     res.render("index", { access:0, searched: "" });
   });
-  console.log("user logged out");
+  console.log("user logged out:", req.session.username);
 });
 
 app.post("/delete-account", async (req, res) => {
@@ -679,6 +671,6 @@ app.post("/delete-account", async (req, res) => {
   }
 });
 //remone "0.0.0.0 if not using render"
-httpServer.listen(port, "0.0.0.0", () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on port ${port}`);
 });
